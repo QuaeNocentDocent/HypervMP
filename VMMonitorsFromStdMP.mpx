@@ -1,0 +1,278 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- this fragments contains monitoring rules copied from Microsoft.WIndows-HyperV.2012.R2.Monitoring management pack, replaced Microsoft with QND -->
+  <TypeDefinitions>
+    <ModuleTypes>
+      <DataSourceModuleType ID="Microsoft.Windows.HyperV.DiskPartitionSpaceProvider.Subscriber" Accessibility="Public" Batching="false">
+        <Configuration />
+        <ModuleImplementation Isolation="Any">
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS" TypeID="Microsoft.Windows.HyperV.DiskPartitionSpaceProvider.PropertyBagProvider">
+                <ManagementGroupId>$Target/ManagementGroup/Id$</ManagementGroupId>
+                <ChannelId>3DEA9314-3887-46B8-B615-752CA2D007E8</ChannelId>
+              </DataSource>
+            </MemberModules>
+            <Composition>
+              <Node ID="DS" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>
+      <DataSourceModuleType ID="Microsoft.Windows.HyperV.DiskPartitionSpaceProvider.PropertyBagProvider" Accessibility="Internal" Batching="false">
+        <Configuration>
+          <xsd:element name="ManagementGroupId" type="xsd:string" />
+          <xsd:element name="ChannelId" type="xsd:string" />
+        </Configuration>
+        <ModuleImplementation Isolation="Any">
+          <Native>
+            <ClassID>8DB8C3B0-3AB0-494a-A09B-5F3643CC27A7</ClassID>
+          </Native>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>      
+    </ModuleTypes>
+    <MonitorTypes>
+         <UnitMonitorType ID="Microsoft.Windows.HyperV.DiskFreeSpaceMonitorType" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="FreeSpaceAvailable" NoDetection="false" />
+          <MonitorTypeState ID="PartialSpaceAvailable" NoDetection="false" />
+          <MonitorTypeState ID="NoSpaceAvailable" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="1" name="VirtualDriveId" type="xsd:string" />
+          <xsd:element minOccurs="1" name="WarningSize" type="xsd:int" />
+          <xsd:element minOccurs="1" name="ErrorSize" type="xsd:int" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="WarningSize" Selector="$Config/WarningSize$" ParameterType="int" />
+          <OverrideableParameter ID="ErrorSize" Selector="$Config/ErrorSize$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="SpaceProvider" TypeID="Microsoft.Windows.HyperV.DiskPartitionSpaceProvider.Subscriber" />
+            <ConditionDetection ID="EnoughSpaceCheck" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <Or>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Integer">Property[@Name='$Config/VirtualDriveId$.FreeSpace']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>Greater</Operator>
+                      <ValueExpression>
+                        <Value Type="Integer">$Config/WarningSize$</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='$Config/VirtualDriveId$.Monitor']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>Equal</Operator>
+                      <ValueExpression>
+                        <Value Type="String">false</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                </Or>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="PartialSpaceCheck" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <And>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Integer">Property[@Name='$Config/VirtualDriveId$.FreeSpace']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>LessEqual</Operator>
+                      <ValueExpression>
+                        <Value Type="Integer">$Config/WarningSize$</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Integer">Property[@Name='$Config/VirtualDriveId$.FreeSpace']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>Greater</Operator>
+                      <ValueExpression>
+                        <Value Type="Integer">$Config/ErrorSize$</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='$Config/VirtualDriveId$.Monitor']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>Equal</Operator>
+                      <ValueExpression>
+                        <Value Type="String">true</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                </And>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="NoSpaceCheck" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <And>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Integer">Property[@Name='$Config/VirtualDriveId$.FreeSpace']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>LessEqual</Operator>
+                      <ValueExpression>
+                        <Value Type="Integer">$Config/ErrorSize$</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='$Config/VirtualDriveId$.Monitor']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>Equal</Operator>
+                      <ValueExpression>
+                        <Value Type="String">true</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                </And>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="FreeSpaceAvailable">
+              <Node ID="EnoughSpaceCheck">
+                <Node ID="SpaceProvider" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="PartialSpaceAvailable">
+              <Node ID="PartialSpaceCheck">
+                <Node ID="SpaceProvider" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="NoSpaceAvailable">
+              <Node ID="NoSpaceCheck">
+                <Node ID="SpaceProvider" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+
+    </MonitorTypes>
+  </TypeDefinitions>
+  <Monitoring>
+    <Rules>
+    </Rules>
+    <Monitors>
+      <!-- 
+      <AggregateMonitor ID="QND.Hyperv.2012R2.VDisk.Rollup.Monitor" Accessibility="Public" Enabled="true" Target="QND.Hyperv.2012R2.VM" 
+                        ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal">
+        <Category>PerformanceHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </AggregateMonitor>
+      -->
+      <!-- don't know what it does and if it works -->
+      <UnitMonitor ID="QND.Windows.HyperV.2012.R2.VirtualDrive.FreeSpaceMonitor" Accessibility="Public" Enabled="onEssentialMonitoring" Target="QND.HyperV.2012R2.VirtualDrive" 
+                   ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="HVLib!Microsoft.Windows.HyperV.DiskFreeSpaceMonitorType" ConfirmDelivery="false">
+        <Category>AvailabilityHealth</Category>
+        <OperationalStates>
+          <OperationalState ID="EnoughSpace" MonitorTypeStateID="FreeSpaceAvailable" HealthState="Success" />
+          <OperationalState ID="PartialSpace" MonitorTypeStateID="PartialSpaceAvailable" HealthState="Warning" />
+          <OperationalState ID="NoSpace" MonitorTypeStateID="NoSpaceAvailable" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <VirtualDriveId>$Target/Property[Type="QND.HyperV.VMHardwareComponent"]/DeviceId$</VirtualDriveId>
+          <WarningSize>2048</WarningSize>
+          <ErrorSize>200</ErrorSize>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="QND.Windows.HyperV.2012.R2.RemoteFxCapableMonitor" Accessibility="Public" Enabled="false" Target="QND.Hyperv.2012R2.VM" 
+                   ParentMonitorID="Health!System.Health.ConfigurationState" Remotable="true" Priority="Normal" TypeID="HVMon!Microsoft.Windows.HyperV.2012.R2.RemoteFXMonitorType" ConfirmDelivery="false">
+        <Category>ConfigurationHealth</Category>
+        <AlertSettings AlertMessage="QND.Windows.HyperV.2012.R2.RemoteFxCapableMonitor.Alert">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters />
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="RemoteFXCapableHardware" MonitorTypeStateID="HostHealthy" HealthState="Success" />
+          <OperationalState ID="RemoteFXInCapableHardware" MonitorTypeStateID="HostCritical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>86400</IntervalSeconds>
+          <TimeoutSeconds>30</TimeoutSeconds>
+          <PropertyName>RemoteFXCapable</PropertyName>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="QND.Windows.HyperV.2012.R2.HeterogeneousGPUMonitor" Accessibility="Public" Enabled="false" Target="QND.Hyperv.2012R2.VM" 
+                   ParentMonitorID="Health!System.Health.ConfigurationState" Remotable="true" Priority="Normal" TypeID="HVMon!Microsoft.Windows.HyperV.2012.R2.RemoteFXMonitorType" ConfirmDelivery="false">
+        <Category>ConfigurationHealth</Category>
+        <AlertSettings AlertMessage="QND.Windows.HyperV.2012.R2.HeterogeneousGPUMonitor.Alert">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters />
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="RemoteFXCapableHardware" MonitorTypeStateID="HostHealthy" HealthState="Success" />
+          <OperationalState ID="RemoteFXInCapableHardware" MonitorTypeStateID="HostCritical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>86400</IntervalSeconds>
+          <TimeoutSeconds>30</TimeoutSeconds>
+          <PropertyName>HeterogeneousGPU</PropertyName>
+        </Configuration>
+      </UnitMonitor>
+      <DependencyMonitor ID="QND.Hyperv.2012R2.VDiskToVM.DepMonitor" Accessibility="Public" Enabled="true" MemberMonitor="Health!System.Health.AvailabilityState"
+                         ParentMonitorID="Health!System.Health.AvailabilityState" RelationshipType="QND.Hyperv.2012R2.VMHostsVMHardwareComponent" Remotable="true" Priority="Normal" Target="QND.Hyperv.2012R2.VM">
+        <Category>AvailabilityHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </DependencyMonitor>
+                         
+    </Monitors>
+  </Monitoring>
+  <Presentation>
+    <StringResources>
+      <StringResource ID="QND.Windows.HyperV.2012.R2.RemoteFxCapableMonitor.Alert" />
+      <StringResource ID="QND.Windows.HyperV.2012.R2.HeterogeneousGPUMonitor.Alert" />
+    </StringResources>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+          <DisplayString ElementID="QND.Windows.HyperV.2012.R2.RemoteFxCapableMonitor.Alert">
+            <Name>GPUs installed in this server are not RemoteFX capable. Virtual machines that are configured to use the GPU will not start.</Name>
+            <Description>GPUs installed in this server are not RemoteFX capable. Virtual machines that are configured to use the GPU will not start.</Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Windows.HyperV.2012.R2.HeterogeneousGPUMonitor.Alert">
+          <Name>GPUs installed in the server are not of the same make and model.</Name>
+          <Description>The server currently hosts GPUs that are not of the same make and model. This configuration is not valid for RemoteFX. RemoteFX requires that GPUs installed in the server must be of the same make and model.</Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Windows.HyperV.2012.R2.VirtualDrive.FreeSpaceMonitor">
+          <Name>Free Space</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Windows.HyperV.2012.R2.RemoteFxCapableMonitor">
+          <Name>RemoteFX Capable</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Windows.HyperV.2012.R2.HeterogeneousGPUMonitor">
+          <Name>Hetherogeneous GPU Capable</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VDiskToVM.DepMonitor">
+          <Name>Virtual Disks</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

@@ -1,0 +1,52 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Monitors>
+      <!-- see http://blogs.msdn.com/b/virtual_pc_guy/archive/2015/03/04/checking-and-correcting-virtual-hard-disk-fragmentation.aspx -->
+      <UnitMonitor ID="QND.Hyperv.2012R2.VHDFragmentation.Monitor" Accessibility="Public" Enabled="true" Target="QND.HyperV.2012R2.VirtualDrive"
+        ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="QND.Hyperv2012R2.VHDFragmentation.MT" ConfirmDelivery="false">
+        <Category>AvailabilityHealth</Category>
+        <AlertSettings AlertMessage="QND.Hyperv.2012R2.VHDFragmentation.Monitor.AlertMessage">
+          <AlertOnState>Warning</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Data/Context/Property[@Name="FragPerc"]$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="OverThreshold1" MonitorTypeStateID="Warning" HealthState="Warning" />
+          <OperationalState ID="OverThreshold2" MonitorTypeStateID="Error" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>14200</IntervalSeconds>
+          <SyncTime></SyncTime>
+          <TimeoutSeconds>600</TimeoutSeconds>
+          <TraceLevel>2</TraceLevel>
+          <VirtualDiskId>$Target/Property[Type='QND.HyperV.VMHardwareComponent']/DeviceId$</VirtualDiskId>
+          <FragmentationWarningThreshold>30</FragmentationWarningThreshold>
+          <FragmentationErrorThreshold>50</FragmentationErrorThreshold>
+        </Configuration>
+      </UnitMonitor>
+    </Monitors>
+  </Monitoring>
+  <Presentation>
+    <StringResources>
+      <StringResource ID="QND.Hyperv.2012R2.VHDFragmentation.Monitor.AlertMessage"/>
+    </StringResources>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VHDFragmentation.Monitor.AlertMessage">
+          <Name>Hyper-V - VHD fragmentation level high</Name>
+          <Description>VHD Fragmentation is {0}. Higher than the threshold set.</Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VHDFragmentation.Monitor">
+          <Name>Fragmentation level</Name>
+        </DisplayString>        
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

@@ -1,0 +1,104 @@
+<TemplateGroup>
+  <Instances>
+    <Instance ID="Instance6e6966ef64584dabab974d07aee03c69" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Id>HypervisorVirtualProcessors.Rule</Id>
+        <DisplayName>Hyper-V 2012 R2 - Virtual Processors</DisplayName>
+        <Description>Hypervisor Virtual Processors Count</Description>
+        <Category>PerformanceCollection</Category>
+        <ConfirmDelivery>false</ConfirmDelivery>
+        <Target>Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.ServerRole</Target>
+        <Enabled>true</Enabled>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <DiscardLevel>100</DiscardLevel>
+        <ConditionDetectionId>CD</ConditionDetectionId>
+        <DataSourceId>DS</DataSourceId>
+        <DataSourceConfig>&lt;ComputerName&gt;$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/NetworkName$&lt;/ComputerName&gt;&lt;CounterName&gt;Virtual Processors&lt;/CounterName&gt;&lt;ObjectName&gt;Hyper-V Hypervisor&lt;/ObjectName&gt;&lt;InstanceName&gt;&lt;/InstanceName&gt;&lt;AllInstances&gt;false&lt;/AllInstances&gt;&lt;Frequency&gt;3600&lt;/Frequency&gt;&lt;Tolerance&gt;0&lt;/Tolerance&gt;&lt;ToleranceType&gt;Absolute&lt;/ToleranceType&gt;&lt;MaximumSampleSeparation&gt;1&lt;/MaximumSampleSeparation&gt;</DataSourceConfig>
+        <DataSourceType>Perf!System.Performance.OptimizedDataProvider</DataSourceType>
+        <CollectToDB>true</CollectToDB>
+        <CollectToDW>true</CollectToDW>
+      </PerformanceCollectionRuleConfig>
+    </Instance>
+    <Instance ID="Instance256fc222ac49488cbed4d322af5deeef" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
+      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <Id>HypervisorTotalCPUTime.Rule</Id>
+        <DisplayName>Hyper-V 2012 R2 - Total CPU Usage</DisplayName>
+        <Description>Totale CPU Usage for both parten and child partitions.</Description>
+        <Category>PerformanceCollection</Category>
+        <ConfirmDelivery>false</ConfirmDelivery>
+        <Target>Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.ServerRole</Target>
+        <Enabled>true</Enabled>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <DiscardLevel>100</DiscardLevel>
+        <ConditionDetectionId>CD</ConditionDetectionId>
+        <DataSourceId>DS</DataSourceId>
+        <DataSourceConfig>&lt;ComputerName&gt;$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/NetworkName$&lt;/ComputerName&gt;&lt;CounterName&gt;% Total Run Time&lt;/CounterName&gt;&lt;ObjectName&gt;Hyper-V Hypervisor Logical Processor&lt;/ObjectName&gt;&lt;InstanceName&gt;_Total&lt;/InstanceName&gt;&lt;AllInstances&gt;false&lt;/AllInstances&gt;&lt;Frequency&gt;300&lt;/Frequency&gt;&lt;Tolerance&gt;5&lt;/Tolerance&gt;&lt;ToleranceType&gt;Absolute&lt;/ToleranceType&gt;&lt;MaximumSampleSeparation&gt;10&lt;/MaximumSampleSeparation&gt;</DataSourceConfig>
+        <DataSourceType>Perf!System.Performance.OptimizedDataProvider</DataSourceType>
+        <CollectToDB>true</CollectToDB>
+        <CollectToDW>true</CollectToDW>
+      </PerformanceCollectionRuleConfig>
+    </Instance>
+    <Instance ID="Instanced10458b2bbe64b6e9882f73decd0187c" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
+      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <Id>HypervisorAvgMemPressure.Rule</Id>
+        <DisplayName>Hyper-V 2012 R2 - Average Memory Pressure</DisplayName>
+        <Description>Average dynamic memoery pressure</Description>
+        <Category>PerformanceCollection</Category>
+        <ConfirmDelivery>false</ConfirmDelivery>
+        <Target>Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.ServerRole</Target>
+        <Enabled>true</Enabled>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <DiscardLevel>100</DiscardLevel>
+        <ConditionDetectionId>CD</ConditionDetectionId>
+        <DataSourceId>DS</DataSourceId>
+        <DataSourceConfig>&lt;ComputerName&gt;$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/NetworkName$&lt;/ComputerName&gt;&lt;CounterName&gt;Average Pressure&lt;/CounterName&gt;&lt;ObjectName&gt;Hyper-V Dynamic Memory Balancer&lt;/ObjectName&gt;&lt;InstanceName&gt;System Balancer&lt;/InstanceName&gt;&lt;AllInstances&gt;false&lt;/AllInstances&gt;&lt;Frequency&gt;300&lt;/Frequency&gt;&lt;Tolerance&gt;5&lt;/Tolerance&gt;&lt;ToleranceType&gt;Absolute&lt;/ToleranceType&gt;&lt;MaximumSampleSeparation&gt;10&lt;/MaximumSampleSeparation&gt;</DataSourceConfig>
+        <DataSourceType>Perf!System.Performance.OptimizedDataProvider</DataSourceType>
+        <CollectToDB>true</CollectToDB>
+        <CollectToDW>true</CollectToDW>
+      </PerformanceCollectionRuleConfig>
+    </Instance>
+    <Instance ID="Instance02215b81f69f46e186811b970537f76c" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
+      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <Id>HypervisorLogicalProcessors.Rule</Id>
+        <DisplayName>Hyper-V 2012 R2 - Logical Processors</DisplayName>
+        <Description>Hypervisor Logical processors Count</Description>
+        <Category>PerformanceCollection</Category>
+        <ConfirmDelivery>false</ConfirmDelivery>
+        <Target>Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.ServerRole</Target>
+        <Enabled>true</Enabled>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <DiscardLevel>100</DiscardLevel>
+        <ConditionDetectionId>CD</ConditionDetectionId>
+        <DataSourceId>DS</DataSourceId>
+        <DataSourceConfig>&lt;ComputerName&gt;$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/NetworkName$&lt;/ComputerName&gt;&lt;CounterName&gt;Logical Processors&lt;/CounterName&gt;&lt;ObjectName&gt;Hyper-V Hypervisor&lt;/ObjectName&gt;&lt;InstanceName&gt;&lt;/InstanceName&gt;&lt;AllInstances&gt;false&lt;/AllInstances&gt;&lt;Frequency&gt;3600&lt;/Frequency&gt;&lt;Tolerance&gt;0&lt;/Tolerance&gt;&lt;ToleranceType&gt;Absolute&lt;/ToleranceType&gt;&lt;MaximumSampleSeparation&gt;1&lt;/MaximumSampleSeparation&gt;</DataSourceConfig>
+        <DataSourceType>Perf!System.Performance.OptimizedDataProvider</DataSourceType>
+        <CollectToDB>true</CollectToDB>
+        <CollectToDW>true</CollectToDW>
+      </PerformanceCollectionRuleConfig>
+    </Instance>
+    <Instance ID="Instance9f03b64d6a66430aa9391f2cffb1b31f" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Id>HypervisorPartitions.Rule</Id>
+        <DisplayName>Hyper-V 2012 R2 - Partitions</DisplayName>
+        <Description>Hypervisor Partitions Count</Description>
+        <Category>PerformanceCollection</Category>
+        <ConfirmDelivery>false</ConfirmDelivery>
+        <Target>Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.ServerRole</Target>
+        <Enabled>true</Enabled>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <DiscardLevel>100</DiscardLevel>
+        <ConditionDetectionId>CD</ConditionDetectionId>
+        <DataSourceId>DS</DataSourceId>
+        <DataSourceConfig>&lt;ComputerName&gt;$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/NetworkName$&lt;/ComputerName&gt;&lt;CounterName&gt;Partitions&lt;/CounterName&gt;&lt;ObjectName&gt;Hyper-V Hypervisor&lt;/ObjectName&gt;&lt;InstanceName&gt;&lt;/InstanceName&gt;&lt;AllInstances&gt;false&lt;/AllInstances&gt;&lt;Frequency&gt;3600&lt;/Frequency&gt;&lt;Tolerance&gt;0&lt;/Tolerance&gt;&lt;ToleranceType&gt;Absolute&lt;/ToleranceType&gt;&lt;MaximumSampleSeparation&gt;1&lt;/MaximumSampleSeparation&gt;</DataSourceConfig>
+        <DataSourceType>Perf!System.Performance.OptimizedDataProvider</DataSourceType>
+        <CollectToDB>true</CollectToDB>
+        <CollectToDW>true</CollectToDW>
+      </PerformanceCollectionRuleConfig>
+    </Instance>
+  </Instances>
+</TemplateGroup>

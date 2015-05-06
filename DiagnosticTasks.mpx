@@ -1,0 +1,23 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Diagnostics>
+      <Diagnostic ID="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor.Check.Cluster.State.Diagnostic" Accessibility="Internal" Enabled="false" Target="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole" Monitor="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor" ExecuteOnState="Error" Remotable="true" Timeout="120">
+        <Category>Custom</Category>
+        <ProbeAction ID="Script" TypeID="QND.Hyperv2012R2.HyperV.Cluster.Node.Status.PT">
+          <ClusterName>$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$</ClusterName>
+          <VMsOnWrongHost>$Data/StateChange/DataItem/Context/DataItem/Property[@Name='VMsOnWrongHost']$</VMsOnWrongHost>
+          <TimeoutSeconds>120</TimeoutSeconds>
+        </ProbeAction>
+      </Diagnostic>
+    </Diagnostics>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor.Check.Cluster.State.Diagnostic">
+          <Name>Check Cluster State Diagnostic Task</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

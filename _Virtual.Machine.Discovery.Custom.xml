@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?><ManagementPack ContentReadable="true" SchemaVersion="2.0" OriginalSchemaVersion="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <Manifest>
+    <Identity>
+      <ID>Virtual.Machine.Discovery.Custom</ID>
+      <Version>1.0.6.0</Version>
+    </Identity>
+    <Name>Virtual.Machine.Discovery.Custom</Name>
+    <References>
+      <Reference Alias="Windows">
+        <ID>Microsoft.Windows.Library</ID>
+        <Version>6.0.6278.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="MicrosoftSystemCenterInstanceGroupLibrary6062780">
+        <ID>Microsoft.SystemCenter.InstanceGroup.Library</ID>
+        <Version>6.0.6278.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="System">
+        <ID>System.Library</ID>
+        <Version>6.0.6278.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SC">
+        <ID>Microsoft.SystemCenter.Library</ID>
+        <Version>6.0.6278.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Health">
+        <ID>System.Health.Library</ID>
+        <Version>6.0.6278.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Microsoft.SystemCenter.Internal">
+        <ID>Microsoft.SystemCenter.Internal</ID>
+        <Version>6.0.6278.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+    </References>
+  </Manifest>
+  <Monitoring>
+    <Discoveries>
+      <Discovery ID="Virtual.Machine.Discovery.Custom.IsVirtualMachineVMware" Enabled="true" Target="Windows!Microsoft.Windows.Computer" ConfirmDelivery="true" Remotable="true" Priority="Normal">
+        <Category>Custom</Category>
+        <DiscoveryTypes>
+          <DiscoveryClass TypeID="Windows!Microsoft.Windows.Computer">
+            <Property TypeID="Windows!Microsoft.Windows.Computer" PropertyID="IsVirtualMachine" />
+          </DiscoveryClass>
+        </DiscoveryTypes>
+        <DataSource ID="Discover.IsVirtualMachine.VMware" TypeID="Windows!Microsoft.Windows.WmiProviderWithClassSnapshotDataMapper">
+          <NameSpace>\\$Target/Property[Type="Windows!Microsoft.Windows.Computer"]/NetworkName$\ROOT\CIMV2</NameSpace>
+          <Query>SELECT * FROM Win32_ComputerSystem WHERE Manufacturer = "VMware, Inc."</Query>
+          <Frequency>86400</Frequency>
+          <ClassId>$MPElement[Name="Windows!Microsoft.Windows.Computer"]$</ClassId>
+          <InstanceSettings>
+            <Settings>
+              <Setting>
+                <Name>$MPElement[Name="Windows!Microsoft.Windows.Computer"]/PrincipalName$</Name>
+                <Value>$Target/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$</Value>
+              </Setting>
+              <Setting>
+                <Name>$MPElement[Name="Windows!Microsoft.Windows.Computer"]/IsVirtualMachine$</Name>
+                <Value>true</Value>
+              </Setting>
+            </Settings>
+          </InstanceSettings>
+        </DataSource>
+      </Discovery>
+      <Discovery ID="Virtual.Machine.Discovery.Custom.DiscoverIsVirtualMachineFalse" Enabled="true" Target="Windows!Microsoft.Windows.Computer" ConfirmDelivery="true" Remotable="true" Priority="Normal">
+        <Category>Custom</Category>
+        <DiscoveryTypes>
+          <DiscoveryClass TypeID="Windows!Microsoft.Windows.Computer">
+            <Property TypeID="Windows!Microsoft.Windows.Computer" PropertyID="IsVirtualMachine" />
+          </DiscoveryClass>
+        </DiscoveryTypes>
+        <DataSource ID="Virtual.Machine.DiscoverIsVirtulMachineFalse" TypeID="Windows!Microsoft.Windows.WmiProviderWithClassSnapshotDataMapper">
+          <NameSpace>\\$Target/Property[Type="Windows!Microsoft.Windows.Computer"]/NetworkName$\ROOT\CIMV2</NameSpace>
+          <Query>SELECT * FROM Win32_BaseBoard WHERE Manufacturer &lt;&gt; "Microsoft Corporation" OR Manufacturer &lt;&gt; "VMware, Inc."</Query>
+          <Frequency>86400</Frequency>
+          <ClassId>$MPElement[Name="Windows!Microsoft.Windows.Computer"]$</ClassId>
+          <InstanceSettings>
+            <Settings>
+              <Setting>
+                <Name>$MPElement[Name="Windows!Microsoft.Windows.Computer"]/PrincipalName$</Name>
+                <Value>$Target/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$</Value>
+              </Setting>
+              <Setting>
+                <Name>$MPElement[Name="Windows!Microsoft.Windows.Computer"]/IsVirtualMachine$</Name>
+                <Value>false</Value>
+              </Setting>
+            </Settings>
+          </InstanceSettings>
+        </DataSource>
+      </Discovery>
+    </Discoveries>
+    <Overrides>
+      <DiscoveryPropertyOverride ID="OverrideForDiscoveryMicrosoftSystemCenterDiscoverIsVirtualMachineFalseForContextMicrosoftWindowsComputer26ef696b862f465c822b2d2680c7a15c" Context="Windows!Microsoft.Windows.Computer" Enforced="false" Discovery="Microsoft.SystemCenter.Internal!Microsoft.SystemCenter.DiscoverIsVirtualMachineFalse" Property="Enabled">
+        <Value>false</Value>
+      </DiscoveryPropertyOverride>
+    </Overrides>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Virtual.Machine.Discovery.Custom">
+          <Name>Virtual Machine Discovery (Custom)</Name>
+        </DisplayString>
+        <DisplayString ElementID="Virtual.Machine.Discovery.Custom.IsVirtualMachineVMware">
+          <Name>Discover if Windows Computer is VMware Virtual Machine</Name>
+          <Description>Sets the IsVirtualMachine property to TRUE for all VMware virtual machines running a  Windows Operating System</Description>
+        </DisplayString>
+        <DisplayString ElementID="Virtual.Machine.Discovery.Custom.DiscoverIsVirtualMachineFalse">
+          <Name>Discover if Windows Computer is Virtual Machine - FALSE </Name>
+        </DisplayString>
+        <DisplayString ElementID="OverrideForDiscoveryMicrosoftSystemCenterDiscoverIsVirtualMachineFalseForContextMicrosoftWindowsComputer26ef696b862f465c822b2d2680c7a15c">
+          <Name>OverrideForDiscoveryMicrosoftSystemCenterDiscoverIsVirtualMachineFalseForContextMicrosoftWindowsComputer26ef696b862f465c822b2d2680c7a15c</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPack>

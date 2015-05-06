@@ -1,0 +1,90 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Recoveries>
+
+      <!-- In this section, you must edit the Target and Monitor attributes to 
+           configure this Recovery to run. Optionally, you can change the recovery 
+           to execute on a diagnostic instead of a particular monitor state. 
+           More information can be found in the Management Pack Development Kit: 
+           http://msdn.microsoft.com/en-us/library/ee533697.aspx -->
+      <Recovery ID="QND.Hyperv2012R2.ResumeReplica" Target="QND.Hyperv.2012R2.ReplicaVM" Monitor="QND.Hyperv2012R2.VMReplica.Status" Accessibility="Public" Enabled="false" 
+                ExecuteOnState="Warning" Remotable="true" ResetMonitor="false" Timeout="300">
+        <Category>Maintenance</Category>
+
+        <!-- Please fill in the type of the condition detection module 
+             or remove the ConditionDetection section. This can be used to
+             inspect the Monitor State, Data Item that caused the State Change,
+             or the Diagnostic ProbeAction Output (if the ExecuteOnDiagnostic
+             attribute is present). If this Condition Detection does not "pass"
+             the WriteAction will not be executed. -->
+        <ConditionDetection ID="Filter" TypeID="System!System.ExpressionFilter">
+          <Expression>
+            <RegExExpression>
+              <ValueExpression>
+                <XPathQuery>StateChange/DataItem/Context/Property[@Name='ReplicationStateCode']</XPathQuery>
+              </ValueExpression>
+              <Operator>MatchesRegularExpression</Operator>
+              <Pattern>^(7,8,9,11)$</Pattern>
+            </RegExExpression>            
+          </Expression>
+        </ConditionDetection>
+        <!-- Please fill in the type of the write action module.
+             Without a ConditionDetection, the WriteAction always executes.
+             The output of the write action will be shown in the 
+             Health Explorer detail pane. -->
+        <WriteAction ID="WA" TypeID="QND.Hyperv2012R2.ResumeReplica.WAT">
+          <TimeoutSeconds>300</TimeoutSeconds>
+          <TraceLevel>2</TraceLevel>
+          <VMId>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</VMId>
+        </WriteAction>
+      </Recovery>
+      <Recovery ID="QND.Hyperv2012R2.Error.ResumeReplica" Target="QND.Hyperv.2012R2.ReplicaVM" Monitor="QND.Hyperv2012R2.VMReplica.Status" Accessibility="Public" Enabled="false"
+                ExecuteOnState="Error" Remotable="true" ResetMonitor="false" Timeout="300">
+        <Category>Maintenance</Category>
+
+        <!-- Please fill in the type of the condition detection module 
+             or remove the ConditionDetection section. This can be used to
+             inspect the Monitor State, Data Item that caused the State Change,
+             or the Diagnostic ProbeAction Output (if the ExecuteOnDiagnostic
+             attribute is present). If this Condition Detection does not "pass"
+             the WriteAction will not be executed. -->
+        <ConditionDetection ID="Filter" TypeID="System!System.ExpressionFilter">
+          <Expression>
+            <RegExExpression>
+              <ValueExpression>
+                <XPathQuery>StateChange/DataItem/Context/Property[@Name='ReplicationStateCode']</XPathQuery>
+              </ValueExpression>
+              <Operator>MatchesRegularExpression</Operator>
+              <Pattern>^(7,8,9,11)$</Pattern>
+            </RegExExpression>
+          </Expression>
+        </ConditionDetection>
+        <!-- Please fill in the type of the write action module.
+             Without a ConditionDetection, the WriteAction always executes.
+             The output of the write action will be shown in the 
+             Health Explorer detail pane. -->
+        <WriteAction ID="WA" TypeID="QND.Hyperv2012R2.ResumeReplica.WAT">
+          <TimeoutSeconds>300</TimeoutSeconds>
+          <TraceLevel>2</TraceLevel>
+          <VMId>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</VMId>
+        </WriteAction>
+      </Recovery>
+
+    </Recoveries>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+
+        <!-- The name of the Recovery will appear in the Health Explorer
+             detail pane. The user can manually click the Diagnostic to run
+             it again. -->
+        <DisplayString ElementID="QND.Hyperv2012R2.ResumeReplica">
+          <Name>Hyper-v - Resume VM Replica</Name>
+          <Description></Description>
+        </DisplayString>
+
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

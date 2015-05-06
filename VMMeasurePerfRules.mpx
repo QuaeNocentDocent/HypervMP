@@ -1,0 +1,529 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Rules>    
+
+      <Rule ID="QND.Hyperv.2012R2.VMUptimePerc.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv.2012R2.GetVMUptimePerf.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime/>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Uptime %</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>PercUptime</ValueProperty>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+          <Expression>
+            <SimpleExpression>
+              <ValueExpression>
+                <XPathQuery Type="String">/DataItem/InstanceName</XPathQuery>
+              </ValueExpression>
+              <Operator>Equal</Operator>
+              <ValueExpression>
+                <Value Type="String">$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</Value>
+              </ValueExpression>
+            </SimpleExpression>
+          </Expression>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+
+      <!--
+      The following commented out rules were valid *before* we started to reset every ndays. In that situation every read was a delta read, the new rules must implement a delta provider
+      <Rule ID="QND.Hyperv.2012R2.VMCPUUsage.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Average CPU</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>AvgCPU</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+          <Expression>
+            <SimpleExpression>
+              <ValueExpression>
+                <XPathQuery Type="String">/DataItem/InstanceName</XPathQuery>
+              </ValueExpression>
+              <Operator>Equal</Operator>
+              <ValueExpression>
+                <Value Type="String">$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</Value>
+              </ValueExpression>
+            </SimpleExpression>
+          </Expression>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VMAvgMemoryUsage.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Average Memory</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>AvgMemory</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+          <Expression>
+            <SimpleExpression>
+              <ValueExpression>
+                <XPathQuery Type="String">/DataItem/InstanceName</XPathQuery>
+              </ValueExpression>
+              <Operator>Equal</Operator>
+              <ValueExpression>
+                <Value Type="String">$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</Value>
+              </ValueExpression>
+            </SimpleExpression>
+          </Expression>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VMMaxMemoryUsage.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Max Memory</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>MaxMemory</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+          <Expression>
+            <SimpleExpression>
+              <ValueExpression>
+                <XPathQuery Type="String">/DataItem/InstanceName</XPathQuery>
+              </ValueExpression>
+              <Operator>Equal</Operator>
+              <ValueExpression>
+                <Value Type="String">$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</Value>
+              </ValueExpression>
+            </SimpleExpression>
+          </Expression>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VMIOPS.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Normalized IOPS</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>NormalizedIOPS</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+          <Expression>
+            <SimpleExpression>
+              <ValueExpression>
+                <XPathQuery Type="String">/DataItem/InstanceName</XPathQuery>
+              </ValueExpression>
+              <Operator>Equal</Operator>
+              <ValueExpression>
+                <Value Type="String">$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</Value>
+              </ValueExpression>
+            </SimpleExpression>
+          </Expression>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VMDiskLatency.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Average Disk Latency</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>AvgDiskLatency</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+          <Expression>
+            <SimpleExpression>
+              <ValueExpression>
+                <XPathQuery Type="String">/DataItem/InstanceName</XPathQuery>
+              </ValueExpression>
+              <Operator>Equal</Operator>
+              <ValueExpression>
+                <Value Type="String">$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</Value>
+              </ValueExpression>
+            </SimpleExpression>
+          </Expression>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+  -->
+
+      <Rule ID="QND.Hyperv.2012R2.VMCPUUsage.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ResetDays>30</ResetDays>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Average CPU</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>AvgCPU</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="Filter" TypeID="QND.Hyperv.2012R2.DeltaAbsAndFilter">
+          <NumSamples>2</NumSamples>
+          <InstanceFilter>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</InstanceFilter>
+        </ConditionDetection>
+
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VMAvgMemoryUsage.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ResetDays>30</ResetDays>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Average Memory</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>AvgMemory</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="Filter" TypeID="QND.Hyperv.2012R2.DeltaAbsAndFilter">
+          <NumSamples>2</NumSamples>
+          <InstanceFilter>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</InstanceFilter>
+        </ConditionDetection>
+
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VMMaxMemoryUsage.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ResetDays>30</ResetDays>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Max Memory</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>MaxMemory</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="Filter" TypeID="QND.Hyperv.2012R2.DeltaAbsAndFilter">
+          <NumSamples>2</NumSamples>
+          <InstanceFilter>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</InstanceFilter>
+        </ConditionDetection>
+
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VMIOPS.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ResetDays>30</ResetDays>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Normalized IOPS</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>NormalizedIOPS</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="Filter" TypeID="QND.Hyperv.2012R2.DeltaAbsAndFilter">
+          <NumSamples>2</NumSamples>
+          <InstanceFilter>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</InstanceFilter>
+        </ConditionDetection>
+
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VMDiskLatency.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ResetDays>30</ResetDays>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Average Disk Latency</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>AvgDiskLatency</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="Filter" TypeID="QND.Hyperv.2012R2.DeltaAbsAndFilter">
+            <NumSamples>2</NumSamples>
+            <InstanceFilter>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</InstanceFilter>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+
+
+      <!-- it woould be intersting for capcity plannig to have the average data read and written from/to disks the datasource calculates this data in DiskDataReadPerSec and DiskDataWrittenPerSec
+        these are based on the MeteringDuration property that in many cases is null. 
+        Another option is to use the Delta provider from Operations Manager, but since we currently reset the measured metrics at every iteration the won't work either.
+        In this version we leave disabled the Delta provider rules and try to enable the rules that take the calculated value
+      -->
+
+      <Rule ID="QND.Hyperv.2012R2.VMDiskDataReadPerSec.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ResetDays>30</ResetDays>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Disk Read per Sec MB</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>DiskDataRead</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="FilterVM" TypeID="QND.Hyperv.2012R2.DeltaPerSecAndFilter">
+          <NumSamples>2</NumSamples>
+          <InstanceFilter>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</InstanceFilter>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VMDiskDataWrittenPerSec.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ResetDays>30</ResetDays>
+            <ObjectName>Virtual Machine</ObjectName>
+            <CounterName>Disk Written per Sec MB</CounterName>
+            <InstanceProperty>VMId</InstanceProperty>
+            <ValueProperty>DiskDataWritten</ValueProperty>
+            <Type>VM</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="FilterVM" TypeID="QND.Hyperv.2012R2.DeltaPerSecAndFilter">
+          <NumSamples>2</NumSamples>
+          <InstanceFilter>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</InstanceFilter>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+
+
+      <!-- Performance collection for single VHD -->
+
+      <Rule ID="QND.Hyperv.2012R2.VHDIOPS.Rule" Target="QND.HyperV.2012R2.VirtualDrive" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ResetDays>30</ResetDays>
+            <ObjectName>Virtual Disk</ObjectName>
+            <CounterName>Normalized IOPS</CounterName>
+            <InstanceProperty>DiskId</InstanceProperty>
+            <ValueProperty>NormalizedIOPS</ValueProperty>
+            <Type>Disk</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="Filter" TypeID="QND.Hyperv.2012R2.DeltaAbsAndFilter">
+          <NumSamples>2</NumSamples>
+          <InstanceFilter>$Target/Property[Type='QND.HyperV.VMHardwareComponent']/DeviceId$</InstanceFilter>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VHDAvgLatency.Rule" Target="QND.HyperV.2012R2.VirtualDrive" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMeasuresPerf.Opti.DS">
+            <IntervalSeconds>3600</IntervalSeconds>
+            <SyncTime></SyncTime>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+            <ResetDays>30</ResetDays>
+            <ObjectName>Virtual Disk</ObjectName>
+            <CounterName>Average Disk Latency</CounterName>
+            <InstanceProperty>DiskId</InstanceProperty>
+            <ValueProperty>AvgDiskLatency</ValueProperty>
+            <Type>Disk</Type>
+            <Tolerance>0</Tolerance>
+            <ToleranceType>Absolute</ToleranceType>
+            <MaximumSampleSeparation>1</MaximumSampleSeparation>
+          </DataSource>
+        </DataSources>
+        <ConditionDetection ID="Filter" TypeID="QND.Hyperv.2012R2.DeltaAbsAndFilter">
+          <NumSamples>2</NumSamples>
+          <InstanceFilter>$Target/Property[Type='QND.HyperV.VMHardwareComponent']/DeviceId$</InstanceFilter>
+        </ConditionDetection>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>      
+
+    </Rules>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMUptimePerc.Rule">
+          <Name>Hyper-V - Collect VM Uptime percentage</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMCPUUsage.Rule">
+          <Name>Hyper-V - Collect VM Measured CPU Usage</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMAvgMemoryUsage.Rule">
+          <Name>Hyper-V - Collect VM Measured Average Memory usage (MB)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMMaxMemoryUsage.Rule">
+          <Name>Hyper-V - Collect VM Measured Maximum Memory Usage (MB)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMIOPS.Rule">
+          <Name>Hyper-V - Collect VM Measured Normalized IOPS</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMDiskLatency.Rule">
+          <Name>Hyper-V - Collect VM Measured Average Disk Latency</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMDiskDataReadPerSec.Rule">
+          <Name>Hyper-V - Collect VM Measured Disk Data Read per seconds (MB/sec) Delta mode</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMDiskDataWrittenPerSec.Rule">
+          <Name>Hyper-V - Collect VM Measured Disk Data Written per seconds (MB/sec) Delta mode</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VHDIOPS.Rule">
+          <Name>Hyper-V - Collect VHD Measured Normalized IOPS</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VHDAvgLatency.Rule">
+          <Name>Hyper-V - Collect VHD Measured Average Disk Latency</Name>
+        </DisplayString>        
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

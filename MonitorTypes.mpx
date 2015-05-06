@@ -1,0 +1,705 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <MonitorTypes>
+      <UnitMonitorType ID="QND.Hyperv2012R2.VMReplica.MT" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy"/>
+          <MonitorTypeState ID="Warning"/>
+          <MonitorTypeState ID="Error"/>
+        </MonitorTypeStates>
+        <!-- See  https://msdn.microsoft.com/en-us/library/hh850116(v=vs.85).aspx -->
+        <Configuration>
+          <xsd:element name="IntervalSeconds" type="xsd:int" />
+          <xsd:element name="SyncTime" type="xsd:string" />
+          <xsd:element name="TimeoutSeconds" type="xsd:int" minOccurs="0" maxOccurs="1" default="60" />
+          <xsd:element name="TraceLevel" type="xsd:int" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="VMId" type="xsd:string" />
+          <xsd:element name="ReplicaAgeHoursWarningThreshold" type="xsd:int" />
+          <xsd:element name="ReplicaAgeHoursErrorThreshold" type="xsd:int" />
+          <xsd:element name="StateHealthyCodes" type="xsd:string" />          
+          <xsd:element name="StateWarningCodes" type="xsd:string" />
+          <xsd:element name="StateErrorCodes" type="xsd:string" />
+          <xsd:element name="HealthyCodes" type="xsd:string" />
+          <xsd:element name="WarningCodes" type="xsd:string" />
+          <xsd:element name="ErrorCodes" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TraceLevel" ParameterType="int" Selector="$Config/TraceLevel$"/>
+          <OverrideableParameter ID="ReplicaAgeHoursWarningThreshold" Selector="$Config/ReplicaAgeHoursWarningThreshold$" ParameterType="int" />
+          <OverrideableParameter ID="ReplicaAgeHoursErrorThreshold" Selector="$Config/ReplicaAgeHoursErrorThreshold$" ParameterType="int" />
+          <OverrideableParameter ID="StateHealthyCodes" Selector="$Config/StateHealthyCodes$" ParameterType="string" />
+          <OverrideableParameter ID="StateWarningCodes" Selector="$Config/StateWarningCodes$" ParameterType="string" />
+          <OverrideableParameter ID="StateErrorCodes" Selector="$Config/StateErrorCodes$" ParameterType="string" />
+          <OverrideableParameter ID="HealthyCodes" Selector="$Config/HealthyCodes$" ParameterType="string" />
+          <OverrideableParameter ID="WarningCodes" Selector="$Config/WarningCodes$" ParameterType="string" />
+          <OverrideableParameter ID="ErrorCodes" Selector="$Config/ErrorCodes$" ParameterType="string" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMReplicaStatus.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <SyncTime>$Config/SyncTime$</SyncTime>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              <TraceLevel>$Config/TraceLevel$</TraceLevel>
+            </DataSource>
+            <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <And>
+                  <Expression>
+                  <SimpleExpression>
+                    <ValueExpression>
+                      <XPathQuery Type="String">Property[@Name='VMId']</XPathQuery>
+                    </ValueExpression>
+                    <Operator>Equal</Operator>
+                    <ValueExpression>
+                      <Value Type="String">$Config/VMId$</Value>
+                    </ValueExpression>
+                  </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                  <SimpleExpression>
+                    <ValueExpression>
+                      <XPathQuery Type="Integer">Property[@Name='ReplicationMode']</XPathQuery>
+                    </ValueExpression>
+                    <Operator>Equal</Operator>
+                    <ValueExpression>
+                      <Value Type="Integer">1</Value>
+                    </ValueExpression>
+                  </SimpleExpression>
+                  </Expression>
+                </And>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="HealthyCD" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <And>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='ReplicationHealthCode']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>MatchesRegularExpression</Operator>
+                      <Pattern>$Config/HealthyCodes$</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='ReplicationStateCode']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>MatchesRegularExpression</Operator>
+                      <Pattern>$Config/StateHealthyCodes$</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Double">Property[@Name='ReplicaAgeHours']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>LessEqual</Operator>
+                      <ValueExpression>
+                        <Value Type="Integer">$Config/ReplicaAgeHoursWarningThreshold$</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>                  
+                </And>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="WarningCD" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <And>
+                  <Expression>
+                <Or>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='ReplicationHealthCode']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>MatchesRegularExpression</Operator>
+                      <Pattern>$Config/WarningCodes$</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='ReplicationStateCode']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>MatchesRegularExpression</Operator>
+                      <Pattern>$Config/StateWarningCodes$</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                  <Expression>
+                    <And>
+                      <Expression>
+                        <SimpleExpression>
+                          <ValueExpression>
+                            <XPathQuery Type="Double">Property[@Name='ReplicaAgeHours']</XPathQuery>
+                          </ValueExpression>
+                          <Operator>Greater</Operator>
+                          <ValueExpression>
+                            <Value Type="Integer">$Config/ReplicaAgeHoursWarningThreshold$</Value>
+                          </ValueExpression>
+                        </SimpleExpression>
+                      </Expression>
+                      <Expression>
+                        <SimpleExpression>
+                          <ValueExpression>
+                            <XPathQuery Type="Double">Property[@Name='ReplicaAgeHours']</XPathQuery>
+                          </ValueExpression>
+                          <Operator>LessEqual</Operator>
+                          <ValueExpression>
+                            <Value Type="Integer">$Config/ReplicaAgeHoursErrorThreshold$</Value>
+                          </ValueExpression>
+                        </SimpleExpression>
+                      </Expression>
+                    </And>
+                  </Expression>
+                </Or>
+                    </Expression>
+                  <Expression>
+                    <Not>
+                      <Expression>
+                        <Or>
+                          <Expression>
+                            <RegExExpression>
+                              <ValueExpression>
+                                <XPathQuery Type="String">Property[@Name='ReplicationHealthCode']</XPathQuery>
+                              </ValueExpression>
+                              <Operator>MatchesRegularExpression</Operator>
+                              <Pattern>$Config/ErrorCodes$</Pattern>
+                            </RegExExpression>
+                          </Expression>
+                          <Expression>
+                            <RegExExpression>
+                              <ValueExpression>
+                                <XPathQuery Type="String">Property[@Name='ReplicationStateCode']</XPathQuery>
+                              </ValueExpression>
+                              <Operator>MatchesRegularExpression</Operator>
+                              <Pattern>$Config/StateErrorCodes$</Pattern>
+                            </RegExExpression>
+                          </Expression>
+                        </Or>                        
+                      </Expression>
+                    </Not>
+                  </Expression>
+                </And>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="ErrorCD" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <Or>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='ReplicationHealthCode']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>MatchesRegularExpression</Operator>
+                      <Pattern>$Config/ErrorCodes$</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='ReplicationStateCode']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>MatchesRegularExpression</Operator>
+                      <Pattern>$Config/StateErrorCodes$</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="Double">Property[@Name='ReplicaAgeHours']</XPathQuery>
+                        </ValueExpression>
+                        <Operator>Greater</Operator>
+                        <ValueExpression>
+                          <Value Type="Integer">$Config/ReplicaAgeHoursErrorThreshold$</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                </Or>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="HealthyCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Warning">
+              <Node ID="WarningCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Error">
+              <Node ID="ErrorCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="QND.Hyperv2012R2.VMSnapshot.MT" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy"/>
+          <MonitorTypeState ID="Warning"/>
+          <MonitorTypeState ID="Error"/>
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element name="IntervalSeconds" type="xsd:int" />
+          <xsd:element name="SyncTime" type="xsd:string" />
+          <xsd:element name="TimeoutSeconds" type="xsd:int" minOccurs="0" maxOccurs="1" default="60" />
+          <xsd:element name="TraceLevel" type="xsd:int" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="VMId" type="xsd:string" />
+          <xsd:element name="SnapshotAgeHoursWarningThreshold" type="xsd:int" />
+          <xsd:element name="SnapshotAgeHoursErrorThreshold" type="xsd:int" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TraceLevel" ParameterType="int" Selector="$Config/TraceLevel$"/>
+          <OverrideableParameter ID="SnapshotAgeHoursWarningThreshold" Selector="$Config/SnapshotAgeHoursWarningThreshold$" ParameterType="int" />
+          <OverrideableParameter ID="SnapshotAgeHoursErrorThreshold" Selector="$Config/SnapshotAgeHoursErrorThreshold$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMSnapshotAge.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <SyncTime>$Config/SyncTime$</SyncTime>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              <TraceLevel>$Config/TraceLevel$</TraceLevel>
+            </DataSource>
+            <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+                  <Expression>
+                  <SimpleExpression>
+                    <ValueExpression>
+                      <XPathQuery Type="String">Property[@Name='VMId']</XPathQuery>
+                    </ValueExpression>
+                    <Operator>Equal</Operator>
+                    <ValueExpression>
+                      <Value Type="String">$Config/VMId$</Value>
+                    </ValueExpression>
+                  </SimpleExpression>
+                  </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="HealthyCD" TypeID="System!System.ExpressionFilter">
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Double">Property[@Name='OldestSnapshotAgeHours']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>LessEqual</Operator>
+                      <ValueExpression>
+                        <Value Type="Integer">$Config/SnapshotAgeHoursWarningThreshold$</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>                  
+            </ConditionDetection>
+            <ConditionDetection ID="WarningCD" TypeID="System!System.ExpressionFilter">
+
+                  <Expression>
+                  <And>
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="Double">Property[@Name='OldestSnapshotAgeHours']</XPathQuery>
+                        </ValueExpression>
+                        <Operator>Greater</Operator>
+                        <ValueExpression>
+                          <Value Type="Integer">$Config/SnapshotAgeHoursWarningThreshold$</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="Double">Property[@Name='OldestSnapshotAgeHours']</XPathQuery>
+                        </ValueExpression>
+                        <Operator>LessEqual</Operator>
+                        <ValueExpression>
+                          <Value Type="Integer">$Config/SnapshotAgeHoursErrorThreshold$</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                  </And>
+                  </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="ErrorCD" TypeID="System!System.ExpressionFilter">
+
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="Double">Property[@Name='OldestSnapshotAgeHours']</XPathQuery>
+                        </ValueExpression>
+                        <Operator>Greater</Operator>
+                        <ValueExpression>
+                          <Value Type="Integer">$Config/SnapshotAgeHoursErrorThreshold$</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="HealthyCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Warning">
+              <Node ID="WarningCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Error">
+              <Node ID="ErrorCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>      
+     <UnitMonitorType ID="QND.Hyperv2012R2.VMISStatus.MT" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="UpToDate"/>
+          <MonitorTypeState ID="NeedsUpdate"/>
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element name="IntervalSeconds" type="xsd:int" />
+          <xsd:element name="SyncTime" type="xsd:string" />
+          <xsd:element name="TimeoutSeconds" type="xsd:int" minOccurs="0" maxOccurs="1" default="60" />
+          <xsd:element name="TraceLevel" type="xsd:int" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="VMId" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TraceLevel" ParameterType="int" Selector="$Config/TraceLevel$"/>
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMISStatus.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <SyncTime>$Config/SyncTime$</SyncTime>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              <TraceLevel>$Config/TraceLevel$</TraceLevel>
+            </DataSource>
+            <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+                  <Expression>
+                  <SimpleExpression>
+                    <ValueExpression>
+                      <XPathQuery Type="String">Property[@Name='VMId']</XPathQuery>
+                    </ValueExpression>
+                    <Operator>Equal</Operator>
+                    <ValueExpression>
+                      <Value Type="String">$Config/VMId$</Value>
+                    </ValueExpression>
+                  </SimpleExpression>
+                  </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="HealthyCD" TypeID="System!System.ExpressionFilter">
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='ISStateCode']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>Equal</Operator>
+                      <ValueExpression>
+                        <Value Type="String">1</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>                  
+            </ConditionDetection>
+            <ConditionDetection ID="WarningCD" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='ISStateCode']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>NotEqual</Operator>
+                  <ValueExpression>
+                    <Value Type="String">1</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="UpToDate">
+              <Node ID="HealthyCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="NeedsUpdate">
+              <Node ID="WarningCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="QND.Hyperv.2012R2.VMMemoryStatus.MT" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="OK"/>
+          <MonitorTypeState ID="UnderPressure"/>
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element name="IntervalSeconds" type="xsd:int" />
+          <xsd:element name="SyncTime" type="xsd:string" />
+          <xsd:element name="TimeoutSeconds" type="xsd:int" minOccurs="0" maxOccurs="1" default="60" />
+          <xsd:element name="TraceLevel" type="xsd:int" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="VMId" type="xsd:string" />
+          <xsd:element name="PressureThreshold" type="xsd:int" minOccurs="0" maxOccurs="1" default="105"/>
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TraceLevel" ParameterType="int" Selector="$Config/TraceLevel$"/>
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMMemoryStatus.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <SyncTime>$Config/SyncTime$</SyncTime>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              <TraceLevel>$Config/TraceLevel$</TraceLevel>
+            </DataSource>
+            <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='VMId']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">$Config/VMId$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="HealthyCD" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <Or>
+                  <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='MemStatus']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">OK</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Double">Property[@Name='Pressure']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>LessEqual</Operator>
+                      <ValueExpression>
+                        <Value Type="Double">$Config/PressureThreshold$</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                </Or>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="WarningCD" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <And>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='MemStatus']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>NotEqual</Operator>
+                      <ValueExpression>
+                        <Value Type="String">OK</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Double">Property[@Name='Pressure']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>Greater</Operator>
+                      <ValueExpression>
+                        <Value Type="Double">$Config/PressureThreshold$</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>                  
+                </And>
+              </Expression>    
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="OK">
+              <Node ID="HealthyCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="UnderPressure">
+              <Node ID="WarningCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="QND.Hyperv2012R2.VHDFragmentation.MT" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy"/>
+          <MonitorTypeState ID="Warning"/>
+          <MonitorTypeState ID="Error"/>
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element name="IntervalSeconds" type="xsd:int" />
+          <xsd:element name="SyncTime" type="xsd:string" />
+          <xsd:element name="TimeoutSeconds" type="xsd:int" minOccurs="0" maxOccurs="1" default="60" />
+          <xsd:element name="TraceLevel" type="xsd:int" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="VirtualDiskId" type="xsd:string" />
+          <xsd:element name="FragmentationWarningThreshold" type="xsd:int" />
+          <xsd:element name="FragmentationErrorThreshold" type="xsd:int" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TraceLevel" ParameterType="int" Selector="$Config/TraceLevel$"/>
+          <OverrideableParameter ID="FragmentationWarningThreshold" Selector="$Config/FragmentationWarningThreshold$" ParameterType="int" />
+          <OverrideableParameter ID="FragmentationErrorThreshold" Selector="$Config/FragmentationErrorThreshold$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVHDStats.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <SyncTime>$Config/SyncTime$</SyncTime>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              <TraceLevel>$Config/TraceLevel$</TraceLevel>
+            </DataSource>
+            <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+                  <Expression>
+                  <SimpleExpression>
+                    <ValueExpression>
+                      <XPathQuery Type="String">Property[@Name='VirtualDiskId']</XPathQuery>
+                    </ValueExpression>
+                    <Operator>Equal</Operator>
+                    <ValueExpression>
+                      <Value Type="String">$Config/VirtualDiskId$</Value>
+                    </ValueExpression>
+                  </SimpleExpression>
+                  </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="HealthyCD" TypeID="System!System.ExpressionFilter">
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Double">Property[@Name='FragPerc']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>LessEqual</Operator>
+                      <ValueExpression>
+                        <Value Type="Integer">$Config/FragmentationWarningThreshold$</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>                  
+            </ConditionDetection>
+            <ConditionDetection ID="WarningCD" TypeID="System!System.ExpressionFilter">
+
+                  <Expression>
+                  <And>
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="Double">Property[@Name='FragPerc']</XPathQuery>
+                        </ValueExpression>
+                        <Operator>Greater</Operator>
+                        <ValueExpression>
+                          <Value Type="Integer">$Config/FragmentationWarningThreshold$</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="Double">Property[@Name='FragPerc']</XPathQuery>
+                        </ValueExpression>
+                        <Operator>LessEqual</Operator>
+                        <ValueExpression>
+                          <Value Type="Integer">$Config/FragmentationErrorThreshold$</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                  </And>
+                  </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="ErrorCD" TypeID="System!System.ExpressionFilter">
+
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="Double">Property[@Name='FragPerc']</XPathQuery>
+                        </ValueExpression>
+                        <Operator>Greater</Operator>
+                        <ValueExpression>
+                          <Value Type="Integer">$Config/FragmentationErrorThreshold$</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="HealthyCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Warning">
+              <Node ID="WarningCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Error">
+              <Node ID="ErrorCD">
+                <Node ID="FilterVM">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>      
+    </MonitorTypes>
+  </TypeDefinitions>
+</ManagementPackFragment>

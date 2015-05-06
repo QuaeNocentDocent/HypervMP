@@ -1,0 +1,164 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Monitors>
+      <UnitMonitor ID="QND.Hyperv2012R2.VMReplica.Status" Accessibility="Public" Enabled="true" Target="QND.Hyperv.2012R2.ReplicaVM"
+      ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="QND.Hyperv2012R2.VMReplica.MT" ConfirmDelivery="false">
+        <Category>AvailabilityHealth</Category>
+        <AlertSettings AlertMessage="QND.Hyperv2012R2.VMReplica.Status.AlertMessage">
+          <AlertOnState>Warning</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Data/Context/Property[@Name='ReplicationHealth']$</AlertParameter1>
+            <AlertParameter2>$Data/Context/Property[@Name='ReplicationState']$</AlertParameter2>
+            <AlertParameter3>$Data/Context/Property[@Name='ReplicaAgeHours']$</AlertParameter3>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Warning" MonitorTypeStateID="Warning" HealthState="Warning" />
+          <OperationalState ID="Error" MonitorTypeStateID="Error" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>1800</IntervalSeconds>
+          <SyncTime></SyncTime>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <TraceLevel>2</TraceLevel>
+          <VMId>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</VMId>
+          <ReplicaAgeHoursWarningThreshold>1</ReplicaAgeHoursWarningThreshold>
+          <ReplicaAgeHoursErrorThreshold>4</ReplicaAgeHoursErrorThreshold>
+          <StateHealthyCodes>^(0|1|3|4|5|6|14)$</StateHealthyCodes>
+          <StateWarningCodes>^(2|7|9|10|11|13)$</StateWarningCodes>
+          <StateErrorCodes>^(8)$</StateErrorCodes>
+          <HealthyCodes>^(0|1)$</HealthyCodes>
+          <WarningCodes>^(2)$</WarningCodes>
+          <ErrorCodes>^(3)$</ErrorCodes>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="QND.Hyperv2012R2.VMSnapshotAge.Status" Accessibility="Public" Enabled="true" Target="QND.Hyperv.2012R2.VM"
+      ParentMonitorID="Health!System.Health.ConfigurationState" Remotable="true" Priority="Normal" TypeID="QND.Hyperv2012R2.VMSnapshot.MT" ConfirmDelivery="false">
+        <Category>AvailabilityHealth</Category>
+        <AlertSettings AlertMessage="QND.Hyperv2012R2.VMSnapshotAge.AlertMessage">
+          <AlertOnState>Warning</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Data/Context/Property[@Name='OldestSnapshotAgeHours']$</AlertParameter1>
+            <AlertParameter2>$Data/Context/Property[@Name='SnapshotHistory']$</AlertParameter2>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Warning" MonitorTypeStateID="Warning" HealthState="Warning" />
+          <OperationalState ID="Error" MonitorTypeStateID="Error" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>7200</IntervalSeconds>
+          <SyncTime></SyncTime>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <TraceLevel>2</TraceLevel>
+          <VMId>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</VMId>
+          <SnapshotAgeHoursWarningThreshold>8</SnapshotAgeHoursWarningThreshold>
+          <SnapshotAgeHoursErrorThreshold>24</SnapshotAgeHoursErrorThreshold>
+        </Configuration>
+      </UnitMonitor>      
+      <UnitMonitor ID="QND.Hyperv2012R2.VMISStatus" Accessibility="Public" Enabled="true" Target="QND.Hyperv.2012R2.VM"
+      ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="QND.Hyperv2012R2.VMISStatus.MT" ConfirmDelivery="false">
+        <Category>AvailabilityHealth</Category>
+        <AlertSettings AlertMessage="QND.Hyperv2012R2.VMISStatus.AlertMessage">
+          <AlertOnState>Warning</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Data/Context/Property[@Name='ISVersion']$</AlertParameter1>
+            <AlertParameter2>$Data/Context/Property[@Name='ISState']$</AlertParameter2>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="UpToDate" HealthState="Success" />
+          <OperationalState ID="Warning" MonitorTypeStateID="NeedsUpdate" HealthState="Warning" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>43200</IntervalSeconds>
+          <SyncTime></SyncTime>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <TraceLevel>2</TraceLevel>
+          <VMId>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</VMId>
+        </Configuration>
+      </UnitMonitor>            
+    </Monitors>
+    <Diagnostics>
+      <Diagnostic ID="QND.Hyperv2012R2.GetReplicaStatus.Diagnostic" Comment="Get Replica Status" Accessibility="Public" Enabled="true" Target="QND.Hyperv.2012R2.ReplicaVM" 
+                  Monitor="QND.Hyperv2012R2.VMReplica.Status" ExecuteOnState="Warning" Remotable="true" Timeout="300">
+        <Category>Maintenance</Category>
+        <ProbeAction ID="PA" TypeID="QND.Hyperv2012R2.VMReplicaStatusTask.PT">
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <TraceLevel>2</TraceLevel>
+          <VMId>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</VMId>
+        </ProbeAction>
+      </Diagnostic>
+      <Diagnostic ID="QND.Hyperv2012R2.GetReplicaStatusError.Diagnostic" Comment="Get Replica Status" Accessibility="Public" Enabled="true" Target="QND.Hyperv.2012R2.ReplicaVM"
+                  Monitor="QND.Hyperv2012R2.VMReplica.Status" ExecuteOnState="Error" Remotable="true" Timeout="300">
+        <Category>Maintenance</Category>
+        <ProbeAction ID="PA" TypeID="QND.Hyperv2012R2.VMReplicaStatusTask.PT">
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <TraceLevel>2</TraceLevel>
+          <VMId>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</VMId>
+        </ProbeAction>
+      </Diagnostic>      
+    </Diagnostics>
+    <Overrides>
+      <MonitorPropertyOverride ID="QND.Hyperv.2012R2.DisableISCheckForUnix.override" Context="QND.Hyperv.2012R2.UnixVM.Group" Monitor="QND.Hyperv2012R2.VMISStatus" Property="Enabled" Enforced="false">
+        <Value>false</Value>
+      </MonitorPropertyOverride>
+    </Overrides>
+  </Monitoring>
+  <Presentation>
+    <StringResources>
+      <StringResource ID="QND.Hyperv2012R2.VMReplica.Status.AlertMessage"/>
+      <StringResource ID="QND.Hyperv2012R2.VMSnapshotAge.AlertMessage"/>
+      <StringResource ID="QND.Hyperv2012R2.VMISStatus.AlertMessage"/>      
+    </StringResources>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv2012R2.VMReplica.Status">
+          <Name>Replica Status</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VMReplica.Status.AlertMessage">
+          <Name>Hyper-V - Replica has issues</Name>
+          <Description>Replica State is:{0}. Replica Health is:{1}. Last replica age in hours is:{2}</Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VMSnapshotAge.Status">
+          <Name>Snapshots age</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VMSnapshotAge.AlertMessage">
+          <Name>Hyper-V - Old snapshot is present</Name>
+          <Description>Oldest snapshot age in hours is:{0}. 
+          History:
+          {1}</Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VMISStatus">
+          <Name>Integration Services Version</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VMISStatus.AlertMessage">
+          <Name>Hyper-V - Integration Services are out dated</Name>
+          <Description>
+            Integration Services Version is: {0}.
+            Integration Services reported status is: {1}.
+          </Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.GetReplicaStatus.Diagnostic">
+          <Name>Get VM Replica Status</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.DisableISCheckForUnix.override">
+          <Name>HyperV - Disables Integration Services version monitoring for *nix VM</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

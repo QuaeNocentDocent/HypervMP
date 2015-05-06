@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{14ec5add-d29a-4ad8-a0ff-0a4fee136db0}</ProjectGuid>
+    <RootNamespace>QND.Hyperv2012R2</RootNamespace>
+    <Name>QND.Hyperv2012R2</Name>
+    <ManagementPackName>QND.Hyperv2012R2</ManagementPackName>
+    <Version>1.0.0.0</Version>
+    <MpFrameworkVersion>v7.0.2</MpFrameworkVersion>
+    <MpFrameworkProfile>OM</MpFrameworkProfile>
+    <ProductVersion>1.1.0.0</ProductVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <GenerateSealed>True</GenerateSealed>
+    <Company>Quae Nocent Docent</Company>
+    <Copyright>Copyright (c) QND. All rights reserved.</Copyright>
+    <DelaySigning>False</DelaySigning>
+    <AssemblyOriginatorKeyFile>C:\Local\Dev\OpsMgr\Firma\QND1.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DelaySigning>false</DelaySigning>
+    <Company>MyCompany</Company>
+    <Copyright>Copyright (c) MyCompany. All rights reserved.</Copyright>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <ManagementPackReference Include="Microsoft.SystemCenter.DataWarehouse.Library">
+      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.SystemCenter.DataWarehouse.Library.mp</HintPath>
+      <Alias>MSDL</Alias>
+      <MinVersion>7.1.10226.0</MinVersion>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.InstanceGroup.Library">
+      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.SystemCenter.InstanceGroup.Library.mp</HintPath>
+      <Alias>MSIL</Alias>
+      <MinVersion>7.5.8501.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.Library">
+      <Alias>SC</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.HyperV.2012.R2.Discovery">
+      <HintPath>C:\Local\Dev\OpsMgr\MPLib2012\Microsoft.Windows.HyperV.2012.R2.Discovery.mp</HintPath>
+      <Alias>Hyperv2012R2</Alias>
+      <MinVersion>7.1.10104.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.HyperV.2012.R2.Monitoring">
+      <HintPath>C:\Local\Dev\OpsMgr\MPLib2012\Microsoft.Windows.HyperV.2012.R2.Monitoring.mp</HintPath>
+      <Alias>HVMon</Alias>
+      <MinVersion>7.1.10104.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.HyperV.Library">
+      <HintPath>C:\Local\Dev\OpsMgr\MPLib2012\Microsoft.Windows.HyperV.Library.mp</HintPath>
+      <Alias>HVLib</Alias>
+      <MinVersion>7.1.10104.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.Library">
+      <Alias>Windows</Alias>
+      <PackageToBundle>false</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.Server.Library">
+      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.Windows.Server.Library.mp</HintPath>
+      <Alias>WSLib</Alias>
+      <MinVersion>6.0.6959.1</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Hardware.Library">
+      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\System.Hardware.Library.mp</HintPath>
+      <Alias>SHL</Alias>
+      <MinVersion>7.0.8433.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Health.Library">
+      <Alias>Health</Alias>
+      <PackageToBundle>false</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Library">
+      <Alias>System</Alias>
+      <PackageToBundle>false</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.Visualization.Library">
+      <Alias>Visualization</Alias>
+      <PackageToBundle>false</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Performance.Library">
+      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\System.Performance.Library.mp</HintPath>
+      <Alias>Perf</Alias>
+      <MinVersion>7.0.8433.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Virtualization.Library">
+      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\System.Virtualization.Library.mp</HintPath>
+      <Alias>Virtualization</Alias>
+      <MinVersion>7.0.8433.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DynamicVMDiscovery.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Groups.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HypervHostPerfRules.mptg.mpx">
+      <SubType>Code</SubType>
+      <DependentUpon>HypervHostPerfRules.mptg</DependentUpon>
+    </Compile>
+    <Compile Include="VMGenericMonitors.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VMMeasurePerfRules.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ManagementPack.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ModuleTypes.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ReplicaMonitors.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MonitorTypes.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Presentation.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Recoveries.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ReplicaVMClass.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VHDMonitors.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VMClasses.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VMMonitorsFromStdMP.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VMPerfRules.mptg.mpx">
+      <SubType>Code</SubType>
+      <DependentUpon>VMPerfRules.mptg</DependentUpon>
+    </Compile>
+    <Compile Include="VMTasks.mptg.mpx">
+      <SubType>Code</SubType>
+      <DependentUpon>VMTasks.mptg</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\Discover-PrimaryReplicaVM.ps1" />
+    <EmbeddedResource Include="Scripts\Discover-VM.ps1" />
+    <EmbeddedResource Include="Scripts\Get-VHDStats.ps1" />
+    <EmbeddedResource Include="Scripts\Get-VMDetails.ps1" />
+    <EmbeddedResource Include="Scripts\Get-VMISStatus.ps1" />
+    <EmbeddedResource Include="Scripts\Get-VMMeasure.ps1" />
+    <EmbeddedResource Include="Scripts\Get-VMMemoryStatus.ps1" />
+    <EmbeddedResource Include="Scripts\Get-VMReplicaStatus.ps1" />
+    <EmbeddedResource Include="Scripts\Get-VMSnapshotAge.ps1" />
+    <EmbeddedResource Include="Scripts\Get-VMUptime.ps1" />
+    <EmbeddedResource Include="Scripts\Resume-VMReplicaWA.ps1" />
+    <EmbeddedResource Include="Scripts\Start-VMAction.ps1" />
+    <EmbeddedResource Include="Scripts\Write-Me.ps1" />
+    <EmbeddedResource Include="Scripts\Write-TriggerEvent.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HypervHostPerfRules.mptg">
+      <SubType>Content</SubType>
+      <Generator>FragmentGenerator</Generator>
+    </Content>
+    <Content Include="VMPerfRules.mptg">
+      <SubType>Content</SubType>
+      <Generator>FragmentGenerator</Generator>
+    </Content>
+    <Content Include="VMTasks.mptg">
+      <SubType>Content</SubType>
+      <Generator>FragmentGenerator</Generator>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VSAC\Microsoft.SystemCenter.OperationsManager.targets" />
+</Project>

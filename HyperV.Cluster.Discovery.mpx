@@ -1,0 +1,110 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+        <ClassType ID="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole" Base="Windows!Microsoft.Windows.ComputerRole" Accessibility="Public" Abstract="false" Hosted="true" Singleton="false">
+          <Property ID="ClusterName" Key="false" Type="string" />
+        </ClassType>
+      </ClassTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+  <Monitoring>
+    <Discoveries>
+      <Discovery ID="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole.Discovery" Target="Win2012R2!Microsoft.Windows.Server.2012.R2.Computer" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryClass TypeID="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole">
+            <Property TypeID="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole" PropertyID="ClusterName" />
+          </DiscoveryClass>
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="Windows!Microsoft.Windows.TimedScript.DiscoveryProvider">
+          <IntervalSeconds>3600</IntervalSeconds>
+          <SyncTime />
+          <ScriptName>ClusterDiscovery.vbs</ScriptName>
+          <Arguments>$MPElement$ $Target/Id$ $Target/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$ "Virtual Machine" "Virtual Machine %" "$Target/Property[Type="Windows!Microsoft.Windows.Server.Computer"]/IsVirtualNode$"</Arguments>
+          <ScriptBody>
+'========================================================
+' AUTHOR:         	Tao Yang
+' Script Name:    	ClusterDiscovery.vbs
+' DATE:           	20/03/2014
+' Version:        	1.0
+' COMMENT:			Script to discover failover clusters
+'========================================================
+On Error Resume Next
+SourceID = WScript.Arguments(0)
+ManagedEntityID = WScript.Arguments(1)
+strComputer = WScript.Arguments(2)
+strCLResType = WScript.Arguments(3)
+strCLResName = WScript.Arguments(4)
+'IsVirtualNode property from Windows.Server.Computer class is either true or empty. never false
+IF NOT IsNull(WScript.Arguments(5)) THEN
+  bIsVirtualNode = WScript.Arguments(5)
+END IF
+
+'Declare variables
+const HKEY_LOCAL_MACHINE = &amp;H80000002
+
+Set oAPI = CreateObject("MOM.ScriptAPI")
+Set oDiscoveryData = oAPI.CreateDiscoveryData(0,SourceID,ManagedEntityID)
+
+'Only continue if IsVirtualNode = "True"
+IF UCase(bIsVirtualNode) = "TRUE" Then
+  'Check if Failover Cluster service exists
+  strKeyPath = "SYSTEM\CurrentControlSet\Services\ClusSvc"
+  'connect to the registry provider
+  Set oReg=GetObject("winmgmts:{impersonationLevel=impersonate}!\\" &amp; strComputer &amp; "\root\default:StdRegProv")
+  If oReg.EnumKey(HKEY_LOCAL_MACHINE, strKeyPath, arrSubKeys) = 0 Then
+    'Cluster Service exists, continue, check if specified cluster resource exists
+    bCLRes = False
+    CLResWMIQuery = "Select * from MSCluster_Resource Where Type = '" &amp; strCLResType &amp;"' AND Name LIKE '" &amp; strCLResName &amp; "'"
+    Set objWMICluster = GetObject("winmgmts:\\" &amp; strComputer &amp; "\root\MSCluster")
+            Set ColCLRes = objWMICluster.ExecQuery (CLResWMIQuery)
+            For Each objCLRes in ColCLRes
+            bCLRes = TRUE
+            Next
+
+            'NetBIOS Computer Name
+            ComputerName = Split(strComputer, ".", -1)(0)
+            'Read Cluster name from registry
+            strCLKeyPath = "SYSTEM\CurrentControlSet\Services\ClusSvc\Parameters"
+            strCLNameValue = "ClusterName"
+            oReg.GetStringValue HKEY_LOCAL_MACHINE,strCLKeyPath, strCLNameValue,strClusterName
+
+            'Proceed if NetBIOS Computer Name equals to cluster name
+            If UCase(ComputerName) = UCase(strClusterName) Then
+            IF bCLRes = TRUE THEN
+            Set oInstance = oDiscoveryData.CreateClassInstance("$MPElement[Name='QND.Hyperv2012R2.HyperV.Cluster.ComputerRole']$")
+            oInstance.AddProperty "$MPElement[Name='Windows!Microsoft.Windows.Computer']/PrincipalName$", strComputer
+            oInstance.AddProperty "$MPElement[Name='System!System.Entity']/DisplayName$", strComputer
+            oInstance.AddProperty "$MPElement[Name='QND.Hyperv2012R2.HyperV.Cluster.ComputerRole']/ClusterName$", UCase(strClusterName)
+            oDiscoveryData.AddInstance(oInstance)
+            END IF
+            END IF
+            End If
+            END IF
+            oAPI.Return oDiscoveryData
+          </ScriptBody>
+          <TimeoutSeconds>120</TimeoutSeconds>
+        </DataSource>
+      </Discovery>
+    </Discoveries>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole">
+          <Name>Hyper-V 2012 R2 Cluster</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole" SubElementID="ClusterName">
+          <Name>Cluster Name</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole.Discovery">
+          <Name>Hyper-V 2012 R2 Cluster Discovery</Name>
+          <Description>Script discovery for Hyper-V Cluster</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

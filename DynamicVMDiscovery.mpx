@@ -1,0 +1,351 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+      <DataSourceModuleType ID="QND.Hyperv.2012R2.VM.DynamicDiscovery.DSType" Accessibility="Internal" Batching="false">
+        <Configuration>
+          <xsd:element name="TraceLevel" type="xsd:integer" />
+          <xsd:element name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element name="TargetComputer" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="TraceLevel" Selector="$Config/TraceLevel$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+        </OverrideableParameters>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS" TypeID="Windows!Microsoft.Windows.EventProvider">
+                <ComputerName>$Config/TargetComputer$</ComputerName>
+                <LogName>Operations Manager</LogName>
+                <AllowProxying>false</AllowProxying>
+                <Expression>
+                  <And>
+                    <Expression>
+                      <RegExExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="UnsignedInteger">EventDisplayNumber</XPathQuery>
+                        </ValueExpression>
+                        <Operator>MatchesRegularExpression</Operator>
+                        <Pattern>62002</Pattern>
+                      </RegExExpression>
+                    </Expression>
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="Integer">EventLevel</XPathQuery>
+                        </ValueExpression>
+                        <Operator>Equal</Operator>
+                        <ValueExpression>
+                          <Value Type="Integer">4</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="String">PublisherName</XPathQuery>
+                        </ValueExpression>
+                        <Operator>Equal</Operator>
+                        <ValueExpression>
+                          <Value Type="String">Hyper-V Dynamic Discovery</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                  </And>               
+                </Expression>
+              </DataSource>
+              <ProbeAction ID ="Discover" TypeID="QND.Hyperv.2012R2.VMDiscovery.PT">
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+                <TraceLevel>$Config/TraceLevel$</TraceLevel>
+                <TargetComputer>$Config/TargetComputer$</TargetComputer>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Discover">
+              <Node ID="DS" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.Discovery.Data</OutputType>
+      </DataSourceModuleType>
+      <DataSourceModuleType ID="QND.Hyperv.2012R2.VMEventsConsolidator.DSType" Accessibility="Internal" Batching="false">
+        <Configuration>
+          <xsd:element name="EventLatencySec" type="xsd:integer" />
+          <xsd:element name="EventConsolidationSec" type="xsd:integer" />
+          <xsd:element name="TargetComputer" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="EventLatencySec" Selector="$Config/EventLatencySec$" ParameterType="int" />
+          <OverrideableParameter ID="EventConsolidationSec" Selector="$Config/EventConsolidationSec$" ParameterType="int" />
+        </OverrideableParameters>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS1" TypeID="Windows!Microsoft.Windows.EventProvider">
+                <ComputerName>$Config/TargetComputer$</ComputerName>
+                <LogName>Microsoft-Windows-Hyper-V-Hypervisor-Operational</LogName>
+                <AllowProxying>false</AllowProxying>
+                <Expression>
+                  <And>
+                    <Expression>
+                      <RegExExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="UnsignedInteger">EventDisplayNumber</XPathQuery>
+                        </ValueExpression>
+                        <Operator>MatchesRegularExpression</Operator>
+                        <Pattern>^(16641|16642)$</Pattern>
+                      </RegExExpression>
+                    </Expression>
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="Integer">EventLevel</XPathQuery>
+                        </ValueExpression>
+                        <Operator>Equal</Operator>
+                        <ValueExpression>
+                          <Value Type="Integer">4</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                  </And>
+                </Expression>
+              </DataSource>
+              <ConditionDetection ID="Consolidate" TypeID="System!System.ConsolidatorCondition">
+                <Consolidator>
+                  <ConsolidationProperties/>
+                  <TimeControl>
+                    <Latency>$Config/EventLatencySec$</Latency>
+                    <WithinTimeSchedule>
+                      <Interval>$Config/EventConsolidationSec$</Interval>
+                    </WithinTimeSchedule>
+                  </TimeControl>
+                  <CountingCondition>
+                    <!-- <Count/> -->
+                    <CountMode>OnNewItemNOP_OnTimerOutputRestart</CountMode>
+                  </CountingCondition>
+                </Consolidator>
+              </ConditionDetection>
+            </MemberModules>
+            <Composition>
+              <Node ID="Consolidate">
+                <Node ID="DS1" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.ConsolidatorData</OutputType>
+      </DataSourceModuleType>
+
+
+      <ProbeActionModuleType ID="QND.Hyperv.2012R2.VMDiscovery.PT" Accessibility="Public" Batching="false">
+        <Configuration>
+          <xsd:element name="TimeoutSeconds" type="xsd:int" minOccurs="0" maxOccurs="1" default="60" />
+          <xsd:element name="TraceLevel" type="xsd:int" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="TargetComputer" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TraceLevel" ParameterType="int" Selector="$Config/TraceLevel$" />
+        </OverrideableParameters>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <ProbeAction ID="Discovery" TypeID="Windows!Microsoft.Windows.PowerShellDiscoveryProbe">
+                <ScriptName>Discover-VM.ps1</ScriptName>
+                <ScriptBody>
+                  $IncludeFileContent/Scripts/Discover-VM.ps1$
+                </ScriptBody>
+                <Parameters>
+                  <Parameter>
+                    <Name>TraceLevel</Name>
+                    <Value>$Config/TraceLevel$</Value>
+                  </Parameter>                  
+                  <Parameter>
+                    <Name>SourceID</Name>
+                    <Value>$MPElement$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>ManagedEntityID</Name>
+                    <Value>$Target/Id$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>HostComputerIdentity</Name>
+                    <Value>$Config/TargetComputer$</Value>
+                  </Parameter>
+                </Parameters>
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+                <StrictErrorHandling>false</StrictErrorHandling>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Discovery" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.Discovery.Data</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>      
+      <WriteActionModuleType ID ="QND.Hyperv.2012R2.WriteTriggerEvent.WAT" Accessibility="Internal">
+        <Configuration>
+          <xsd:element name="Source" type="xsd:string" minOccurs="1" maxOccurs="1" default="Schedule" />          
+        </Configuration>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <WriteAction ID="WA" TypeID="Windows!Microsoft.Windows.PowerShellWriteAction">
+                <ScriptName>Write-TriggerEvent.ps1</ScriptName>
+                <ScriptBody>
+                  $IncludeFileContent/Scripts/Write-TriggerEvent.ps1$
+                </ScriptBody>
+                <Parameters>
+                  <Parameter>
+                    <Name>Source</Name>
+                    <Value>$Config/Source$</Value>
+                  </Parameter>
+                </Parameters>
+                <TimeoutSeconds>60</TimeoutSeconds>
+                <StrictErrorHandling>false</StrictErrorHandling>
+                <!-- true only for Tasks -->
+              </WriteAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="WA" />
+            </Composition>
+          </Composite>          
+        </ModuleImplementation>
+        <OutputType>Windows!Microsoft.Windows.SerializedObjectData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </WriteActionModuleType>
+    </ModuleTypes>
+  </TypeDefinitions>
+  <Monitoring>
+    <Discoveries>
+      <Discovery ID="QND.Hyperv.2012R2.VirtualMachineDiscovery" Enabled="onEssentialMonitoring" Target="Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.ServerRole" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryClass TypeID="Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.VirtualMachine">
+            <Property TypeID="QND.Hyperv.2012R2.VM" PropertyID="VirtualMachineId" />
+            <Property TypeID="QND.Hyperv.2012R2.VM" PropertyID="VirtualMachineName" />
+            <Property TypeID="QND.Hyperv.2012R2.VM" PropertyID="HostName" />
+            <Property TypeID="QND.Hyperv.2012R2.VM" PropertyID="VMComputerName" />
+          </DiscoveryClass>
+          <!--
+          <DiscoveryClass TypeID="Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.VirtualDrive">
+            <Property TypeID="Windows!Microsoft.Windows.Computer" PropertyID="PrincipalName" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.ServerRole" PropertyID="ServerId" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualMachine" PropertyID="VirtualMachineId" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualHardwareComponent" PropertyID="DeviceId" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualHardwareComponent" PropertyID="Name" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualHardwareComponent" PropertyID="VirtualMachineName" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualDrive" PropertyID="ConnectedControllerName" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualDrive" PropertyID="ImageFile" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualDrive" PropertyID="DriveType" />
+          </DiscoveryClass>
+          <DiscoveryClass TypeID="Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.VirtualNetworkAdapter">
+            <Property TypeID="Windows!Microsoft.Windows.Computer" PropertyID="PrincipalName" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.ServerRole" PropertyID="ServerId" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualMachine" PropertyID="VirtualMachineId" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualHardwareComponent" PropertyID="DeviceId" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualHardwareComponent" PropertyID="Name" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualHardwareComponent" PropertyID="VirtualMachineName" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualNetworkAdapter" PropertyID="ConnectedNetworkId" />
+            <Property TypeID="HypervLib!Microsoft.Windows.HyperV.VirtualNetworkAdapter" PropertyID="ConnectedNetworkName" />
+          </DiscoveryClass> -->
+          <!-- bogus entry to fool VSAE and force the inclusion of WSLib 
+          <DiscoveryClass TypeID="WSLib!Microsoft.Windows.Server.6.2.Computer" /> -->
+          <DiscoveryClass TypeID="SHL!System.ComputerHardware" />
+          <DiscoveryRelationship TypeID="SC!Microsoft.SystemCenter.HealthServiceShouldManageEntity" />
+        </DiscoveryTypes>
+        <DataSource ID="DiscoveryDataSource" TypeID="QND.Hyperv.2012R2.VM.DynamicDiscovery.DSType">
+          <TraceLevel>2</TraceLevel>
+          <TimeoutSeconds>600</TimeoutSeconds>
+          <TargetComputer>$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$</TargetComputer>
+        </DataSource>
+      </Discovery>
+    </Discoveries>
+    <Rules>
+      <Rule ID="QND.Hyperv.2012R2.TranslateNewPartitionEvent.Rule" ConfirmDelivery="false" DiscardLevel="100" Enabled="true" Priority="Normal" Remotable="false" Target="Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.ServerRole">
+        <Category>Discovery</Category>
+        <DataSources>
+          <DataSource ID="GetAndConsolidate" TypeID="QND.Hyperv.2012R2.VMEventsConsolidator.DSType">
+            <EventLatencySec>0</EventLatencySec>
+            <EventConsolidationSec>600</EventConsolidationSec>
+            <TargetComputer>$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$</TargetComputer>
+          </DataSource>
+        </DataSources>
+        <WriteActions>
+          <WriteAction ID="WriteEvent" TypeID="QND.Hyperv.2012R2.WriteTriggerEvent.WAT">
+            <Source>ClusterLog</Source>
+          </WriteAction>
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv.2012R2.VMDynamicDiscoveryTrigger.Rule" ConfirmDelivery="false" DiscardLevel="100" Enabled="true" Priority="Normal" Remotable="false" Target="Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.ServerRole">
+        <Category>Discovery</Category>
+        <DataSources>
+          <DataSource ID="DS1" TypeID="System!System.Discovery.Scheduler">
+            <Scheduler>
+              <SimpleReccuringSchedule>
+                <Interval Unit="Seconds">43200</Interval>
+                <SyncTime/>
+              </SimpleReccuringSchedule>
+              <ExcludeDates/>
+            </Scheduler>
+          </DataSource>
+        </DataSources>
+        <WriteActions>
+          <WriteAction ID="WriteEvent" TypeID="QND.Hyperv.2012R2.WriteTriggerEvent.WAT">
+            <Source>Scheduled</Source>
+          </WriteAction>
+        </WriteActions>
+      </Rule>
+      <!-- the following rule is for debug purposes to check if the OpsMgr hierarchy caclulator sets the proper releatinships -->
+      <Rule ID="QND.Hyperv.2012R2.WhosMonitoringMe" Target="QND.Hyperv.2012R2.VM" ConfirmDelivery="false" DiscardLevel="100" Enabled="false" Remotable="true" Priority="Normal">
+        <Category>Custom</Category>
+        <DataSources>
+          <DataSource ID="Scheduler" TypeID="System!System.SimpleScheduler">
+            <IntervalSeconds>60</IntervalSeconds>
+            <SyncTime />
+          </DataSource>
+        </DataSources>
+        <WriteActions>
+          <WriteAction ID="WriteEvent" TypeID="Windows!Microsoft.Windows.PowerShellWriteAction">
+            <ScriptName>Write-Me.ps1</ScriptName>
+            <ScriptBody>$IncludeFileContent/Scripts/Write-ME.ps1$</ScriptBody>
+            <Parameters>
+              <Parameter>
+                <Name>VMName</Name>
+                <Value>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineName$</Value>
+              </Parameter>
+            </Parameters>
+            <TimeoutSeconds>30</TimeoutSeconds>
+          </WriteAction>
+        </WriteActions>
+      </Rule>
+    </Rules>
+    <Overrides>
+      <DiscoveryPropertyOverride ID="QND.Hyperv.2012R2.DisableStdVMDiscovery.Override" Context="Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.ServerRole" Enforced="false"
+                                 Discovery="Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.VirtualMachineDiscovery" Property="Enabled">
+        <Value>false</Value>
+      </DiscoveryPropertyOverride>
+    </Overrides>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VirtualMachineDiscovery">
+          <Name>Hyper-V 2012R2 - Dynamic VM Discovery</Name>          
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.TranslateNewPartitionEvent.Rule">
+          <Name>Hyper-V 2012R2 - Dynamic VM Discovery New Partition Hook</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMDynamicDiscoveryTrigger.Rule">
+          <Name>Hyper-V 2012R2 - Dynamic VM Discovery Time hook</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.DisableStdVMDiscovery.Override">
+          <Name>Hyper-V 2012R2 - Disable Standard VM Discovery</Name>
+        </DisplayString>        
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

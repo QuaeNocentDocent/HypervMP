@@ -1,0 +1,54 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Monitors>
+      <UnitMonitor ID="QND.Hyperv.2012R2.VMMemoryStatus" Accessibility="Public" Enabled="true" Target="QND.Hyperv.2012R2.VM"
+            ParentMonitorID="Health!System.Health.PerformanceState" Remotable="true" Priority="Normal" TypeID="QND.Hyperv.2012R2.VMMemoryStatus.MT" ConfirmDelivery="false">
+        <Category>PerformanceHealth</Category>
+        <AlertSettings AlertMessage="QND.Hyperv.2012R2.VMMemoryStatus.AlertMessage">
+          <AlertOnState>Warning</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="QND.Hyperv.2012R2.VM"]/VirtualMachineName$</AlertParameter1>
+            <AlertParameter2>$Data/Context/Property[@Name="MemStatus"]$</AlertParameter2>
+            <AlertParameter3>$Data/Context/Property[@Name="Pressure"]$</AlertParameter3>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="OK" HealthState="Success" />
+          <OperationalState ID="UnderPressure" MonitorTypeStateID="UnderPressure" HealthState="Warning" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>3611</IntervalSeconds>
+          <SyncTime></SyncTime>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <TraceLevel>2</TraceLevel>
+          <VMId>$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$</VMId>
+          <PressureThreshold>105</PressureThreshold>
+        </Configuration>
+      </UnitMonitor>
+    </Monitors>
+  </Monitoring>
+  <Presentation>
+    <StringResources>
+      <StringResource ID="QND.Hyperv.2012R2.VMMemoryStatus.AlertMessage"/>
+    </StringResources>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMMemoryStatus">
+          <Name>VM Dynamic Memory Status</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VMMemoryStatus.AlertMessage">
+          <Name>Hyper-V - Dynamic Memory pressure</Name>
+          <Description>{0} is under memory pressure. Performance can be impacted.
+          Current Memory Status:{1}
+          Current Pressure Level:{2}
+        </Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

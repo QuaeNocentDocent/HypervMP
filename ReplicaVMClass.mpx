@@ -1,0 +1,77 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+        
+<!-- HypervLib!Server is not included in MP let's check now 
+        <ClassType ID="QND.Hyperv2012R2.VSAESucks" Base="HypervLib!Microsoft.Windows.HyperV.ServerRole" Accessibility="Internal" Abstract="false" Hosted="true" Singleton="false" />  -->
+        <ClassType ID="QND.Hyperv.2012R2.ReplicaVM" Base="QND.Hyperv.2012R2.VM" Accessibility="Public" Abstract="false" Hosted="false" Singleton="false">
+
+          <Property ID="PrimaryServerName" Key="false" Type="string" />
+          <Property ID="ReplicaServerName" Key="false" Type="string" />
+          <Property ID="RelationshipType" Key="false" Type="string" />
+          <Property ID="ReplicationMode" Key="false" Type="string" />          
+          <Property ID="FrequencySec" Key="false" Type="int" />          
+        </ClassType>
+      
+      </ClassTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+  <Monitoring>
+    <Discoveries>
+      <Discovery ID="QND.Hyperv.2012R2.ReplicaVM.Discovery" ConfirmDelivery="false" Enabled="true" Priority="Normal" Remotable="false" Target="Hyperv2012R2!Microsoft.Windows.HyperV.2012.R2.ServerRole">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryClass TypeID="QND.Hyperv.2012R2.ReplicaVM">
+
+          </DiscoveryClass>
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="QND.Hyperv.2012R2.ReplicaVM.Discovery.DSType">
+          <TraceLevel>2</TraceLevel>
+          <IntervalSeconds>43200</IntervalSeconds>
+          <SyncTime></SyncTime>
+          <TimeoutSeconds>300</TimeoutSeconds>
+          <TargetComputer>$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$</TargetComputer>
+        </DataSource>
+      </Discovery>
+    </Discoveries>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        
+        <!-- This is the string users of the Operations Console and Web Console will see. 
+             Descriptions are also helpful when the user is doing a search in the Console. -->
+        <DisplayString ElementID="QND.Hyperv.2012R2.ReplicaVM">
+          <Name>Hyper-V 2012 R2 - Replica Virtual Machine</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.ReplicaVM" SubElementID="PrimaryServerName">
+          <Name>Primary Server Name</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.ReplicaVM" SubElementID="ReplicaServerName">
+          <Name>Replica Server Name</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.ReplicaVM" SubElementID="RelationshipType">
+          <Name>Relationship</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.ReplicaVM" SubElementID="FrequencySec">
+          <Name>Replica Frequency sec</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.ReplicaVM" SubElementID="ReplicationMode">
+          <Name>Replication mode</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.ReplicaVM.Discovery">
+          <Name>Hyper-V 2012 R2 - Discovers VM Primary Replica</Name>
+          <Description></Description>
+        </DisplayString>        
+        
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

@@ -1,0 +1,285 @@
+<TemplateGroup>
+  <Instances>
+    <Instance ID="Instancebc005d26e75f437092991415f27ee5b5" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>GetVMDetails.Task</Id>
+        <DisplayName>Hyper-V - Get VM Details</DisplayName>
+        <Description>Get VM Details</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType>QND.Hyperv.2012R2.VMDetailsTask.PT</ProbeActionType>
+        <WriteActionId>WA</WriteActionId>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instance3e11b3c6915441fbbe573a10501e057b" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>GetVMReplicaStatus.Task</Id>
+        <DisplayName>Hyper-V - get VM replica Status</DisplayName>
+        <Description>Get VM replica Status</Description>
+        <Target>QND.Hyperv.2012R2.ReplicaVM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType>QND.Hyperv2012R2.VMReplicaStatusTask.PT</ProbeActionType>
+        <WriteActionId>WA</WriteActionId>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instance741d6f0fc657409391ab81fec6999db7" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>ResumeVMReplica.Task</Id>
+        <DisplayName>Hyper-V - Resume VM replica</DisplayName>
+        <Description>Resume VM Replica</Description>
+        <Target>QND.Hyperv.2012R2.ReplicaVM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv2012R2.ResumeReplica.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instanceb560a46a02534590a98cb97539fde32c" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>SaveVM.Task</Id>
+        <DisplayName>Hyper-V - Save VM</DisplayName>
+        <Description>Saves VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;save&lt;/Action&gt;&lt;Param1&gt;ignore&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMActions.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instance9b47d41177c740b4a5b9f2e99f142d07" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>PauseVM.Task</Id>
+        <DisplayName>Hyper-V - Pause VM</DisplayName>
+        <Description>Pauses VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;pause&lt;/Action&gt;&lt;Param1&gt;ignore&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMActions.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instance833702f2f8544f0c98aaccc0631bffeb" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>ResumeVM.Task</Id>
+        <DisplayName>Hyper-V - Resume VM</DisplayName>
+        <Description>Resumes a saved VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;resume&lt;/Action&gt;&lt;Param1&gt;ignore&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMActions.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instance56626a6e04db40598f9901cd3a1555d2" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>ListVMCheckpoints.Task</Id>
+        <DisplayName>Hyper-V - List VM checkpoints</DisplayName>
+        <Description>List VM checkpoints</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;resume&lt;/Action&gt;&lt;Param1&gt;ignore&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMActions.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instance31dc616c59f04e4eb629c608911987af" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>PoweroffVM.Task</Id>
+        <DisplayName>Hyper-V - Power off VM</DisplayName>
+        <Description>Powers off a VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;turnoff&lt;/Action&gt;&lt;Param1&gt;ignore&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMActions.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instancead235c6ee6384277b3363320e1624a8c" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>CheckpointVM.Task</Id>
+        <DisplayName>Hyper-V - Checkpoint Create</DisplayName>
+        <Description>Checkpoint VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;checkpoint&lt;/Action&gt;&lt;Param1&gt;Checpoint Name&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMCheckpoint.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instance80e0edc12727433c9550df0daf8eded1" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>RestartVM.Task</Id>
+        <DisplayName>Hyper-V - Restart VM</DisplayName>
+        <Description>Restarts a VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;restart&lt;/Action&gt;&lt;Param1&gt;ignore&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMActions.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instance76e26f4082534d1bac85eb5b83823dbc" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>StopVM.Task</Id>
+        <DisplayName>Hyper-V - Shutdown VM</DisplayName>
+        <Description>Shuts down VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;stop&lt;/Action&gt;&lt;Param1&gt;ignore&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMStop.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instanceb76e186dbfbe4f12b0a55735e4c5e5f4" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>VMCheckpointRemove.Task</Id>
+        <DisplayName>Hyper-V - Checkpoint Remove</DisplayName>
+        <Description>Remove a checkpoint from a VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;removecheckpoint&lt;/Action&gt;&lt;Param1&gt;Checkpoint Name&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMCheckpoint.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instance4716571a58c149a89a13776b9accf255" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>VMMigrate.Task</Id>
+        <DisplayName>Hyper-V - Live Migrate VM</DisplayName>
+        <Description>Live migrates an highly available VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;migrate&lt;/Action&gt;&lt;Param1&gt;best&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMMigrate.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instancef5843574b2b147279be3d5b9e2b1121b" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>VMCheckpointRestore.Task</Id>
+        <DisplayName>Hyper-V - Checkpoint Restore</DisplayName>
+        <Description>Restore a checkpoint to a VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;restorecheckpoint&lt;/Action&gt;&lt;Param1&gt;Checkpoint Name&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMCheckpoint.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+    <Instance ID="Instanceaeccc636bf224a1791ba594434413da9" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.CustomTask" Version="1.0.0.0">
+      <CustomTaskConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Accessibility>Internal</Accessibility>
+        <Id>StartVM.Task</Id>
+        <DisplayName>Hyper-V - Start VM</DisplayName>
+        <Description>Starts VM</Description>
+        <Target>QND.Hyperv.2012R2.VM</Target>
+        <Enabled>true</Enabled>
+        <Category>Maintenance</Category>
+        <Timeout>300</Timeout>
+        <Remotable>true</Remotable>
+        <ProbeActionId>PA</ProbeActionId>
+        <ProbeActionConfig>&lt;TimeoutSeconds&gt;60&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;</ProbeActionConfig>
+        <ProbeActionType />
+        <WriteActionId>WA</WriteActionId>
+        <WriteActionConfig>&lt;TimeoutSeconds&gt;300&lt;/TimeoutSeconds&gt;&lt;TraceLevel&gt;2&lt;/TraceLevel&gt;&lt;VMId&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineId$&lt;/VMId&gt;&lt;Action&gt;start&lt;/Action&gt;&lt;Param1&gt;ignore&lt;/Param1&gt;</WriteActionConfig>
+        <WriteActionType>QND.Hyperv.2012R2.VMActions.WAT</WriteActionType>
+      </CustomTaskConfig>
+    </Instance>
+  </Instances>
+</TemplateGroup>

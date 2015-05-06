@@ -1,0 +1,145 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+        <ClassType ID="QND.Hyperv.2012R2.VM" Abstract="false" Base="Virtualization!System.VirtualMachine" Hosted="false" Accessibility="Public">
+          <Property ID="VirtualMachineId" Type="string" Key="true" CaseSensitive="false" MinLength="0" MaxLength="255"/>
+          <Property ID="VirtualMachineName" Type="string" Key="false" CaseSensitive="false"  MinLength="0" MaxLength="255"/>
+          <Property ID="HostName" Type="string" Key="false" CaseSensitive="false"  MinLength="0" MaxLength="255"/>
+          <Property ID="HVFarm" Type="string" Key="false" CaseSensitive="false"  MinLength="0" MaxLength="255"/>          
+          <Property ID="VMComputerName" Type="string" Key="false" CaseSensitive="false" MinLength="0" MaxLength="255"/>
+          <Property ID="ISVersion" Type="string" Key="false" CaseSensitive="false" MinLength="0" MaxLength="255"/>
+          <Property ID="RMEnabled" Type="bool" Key="false" />
+          <Property ID="VMGeneration" Type="string" Key="false" CaseSensitive="false" MinLength="0" MaxLength="255"/>
+          <Property ID="HA" Type="bool" Key="false"/>
+          <Property ID="MinMemory" Type="double" Key="false"/>
+          <Property ID="MaxMemory" Type="double" Key="false" />
+          <Property ID="StartMemory" Type="double" Key="false" />
+          <Property ID="OSPlatformId" Type="int" Key="false" />
+          <Property ID="OSFamily" Type="string" Key="false" CaseSensitive="false" MinLength="0" MaxLength="255"/>
+          <Property ID="OSName" Type="string" Key="false" CaseSensitive="false" MinLength="0" MaxLength="255"/>
+          <Property ID="OSVersion" Type="string" Key="false" CaseSensitive="false" MinLength="0" MaxLength="255"/>          
+        </ClassType>
+        <ClassType ID="QND.HyperV.2012R2.VirtualDrive" Accessibility="Public" Abstract="false" Base="QND.HyperV.VMHardwareComponent" Hosted="true" Singleton="false">
+          <Property ID="ConnectedControllerName" Type="string" Key="false" CaseSensitive="false" MaxLength="255" MinLength="0" />
+          <Property ID="ImageFile" Type="string" Key="false" CaseSensitive="false" MaxLength="255" MinLength="0" />
+          <Property ID="VHDType" Type="string" Key="false" CaseSensitive="false" MaxLength="255" MinLength="0" />
+          <Property ID="VHDFormat" Type="string" Key="false" CaseSensitive="false" MaxLength="255" MinLength="0" />
+          <Property ID="MaxSizeGB" Type="double" Key="false"/>
+        </ClassType>
+        <ClassType ID="QND.HyperV.2012R2.VirtualNetworkAdapter" Accessibility="Public" Abstract="false" Base="QND.HyperV.VMHardwareComponent" Hosted="true" Singleton="false">
+          <Property ID="SwitchId" Type="string" Key="false" CaseSensitive="false" MaxLength="255" MinLength="0" />
+          <Property ID="SwitchName" Type="string" Key="false" CaseSensitive="false" MaxLength="255" MinLength="0" />
+        </ClassType>
+        <ClassType ID="QND.HyperV.VMHardwareComponent" Accessibility="Public" Abstract="true" Base="Virtualization!System.VirtualHardwareComponent" Hosted="true" Singleton="false">
+          <Property ID="DeviceId" Type="string" Key="true" CaseSensitive="false" MaxLength="255" MinLength="0" />
+          <Property ID="Name" Type="string" Key="false" CaseSensitive="false" MaxLength="255" MinLength="0" />
+          <Property ID="PerfInstance" Type="string" Key="false" CaseSensitive="false" MaxLength="255" MinLength="0" />
+        </ClassType>
+      </ClassTypes>
+      <RelationshipTypes>
+        <RelationshipType ID="QND.Hyperv.2012R2.VMHostsVMHardwareComponent" Abstract="false" Base="System!System.Hosting" Accessibility="Public">
+          <Source ID="VM" Type="QND.Hyperv.2012R2.VM" />
+          <Target ID="Hw" Type="QND.HyperV.VMHardwareComponent"/>
+        </RelationshipType>
+      </RelationshipTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM">
+          <Name>Hyper-V 2012R2 - Virtual Machine (QND)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="VirtualMachineId">
+          <Name>VM Id</Name>
+        </DisplayString>        
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="VirtualMachineName">
+          <Name>VM Name</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="HostName">
+          <Name>Hyper-V Host Name</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="VMComputerName">
+          <Name>VM Guest Computer Name</Name>
+        </DisplayString>        
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="ISVersion">
+          <Name>Integration Services Version</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="RMEnabled">
+          <Name>Resource Metering Enabled</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="VMGeneration">
+          <Name>VM Generation</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="HA">
+          <Name>Highly Available</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="MinMemory">
+          <Name>Min Memory (MB)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="MaxMemory">
+          <Name>Max Memoery (MB)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="StartMemory">
+          <Name>Startup Memory (MB)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="OSPlatformId">
+          <Name>OS Platform Id</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="OSFamily">
+          <Name>OS Family</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="OSName">
+          <Name>OS Name</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="OSVersion">
+          <Name>OS Version</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VM" SubElementID="HVFarm">
+          <Name>Hyper-V Farm</Name>
+        </DisplayString>        
+        <DisplayString ElementID="QND.HyperV.VMHardwareComponent">
+          <Name>Hyper-V - VM Hardware Component (QND)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.VMHardwareComponent" SubElementID="DeviceId">
+          <Name>Device ID</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.VMHardwareComponent" SubElementID="Name">
+          <Name>Name</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.VMHardwareComponent" SubElementID="PerfInstance">
+          <Name>Performance Instance Name</Name>
+        </DisplayString>        
+        <DisplayString ElementID="QND.HyperV.2012R2.VirtualDrive">
+          <Name>Hyper-V 2012R2 - VM Disk (QND)</Name>
+        </DisplayString>
+        
+        <DisplayString ElementID="QND.HyperV.2012R2.VirtualDrive" SubElementID="ConnectedControllerName">
+          <Name>Controller</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.2012R2.VirtualDrive" SubElementID="ImageFile">
+          <Name>File</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.2012R2.VirtualDrive" SubElementID="VHDType">
+          <Name>VHD Type</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.2012R2.VirtualDrive" SubElementID="VHDFormat">
+          <Name>VHD Format</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.2012R2.VirtualDrive" SubElementID="MaxSizeGB">
+          <Name>Max Size GB</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.2012R2.VirtualNetworkAdapter">
+          <Name>Hyper-V 2012R2 - VM NIC (QND)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.2012R2.VirtualNetworkAdapter" SubElementID="SwitchId">
+          <Name>Virtual Switch Id</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.2012R2.VirtualNetworkAdapter" SubElementID="SwitchName">
+          <Name>Virtual Switch Name</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>
