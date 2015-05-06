@@ -6,7 +6,7 @@
     <RootNamespace>QND.Hyperv2012R2</RootNamespace>
     <Name>QND.Hyperv2012R2</Name>
     <ManagementPackName>QND.Hyperv2012R2</ManagementPackName>
-    <Version>1.0.0.0</Version>
+    <Version>1.1.0.0</Version>
     <MpFrameworkVersion>v7.0.2</MpFrameworkVersion>
     <MpFrameworkProfile>OM</MpFrameworkProfile>
     <ProductVersion>1.1.0.0</ProductVersion>
@@ -18,7 +18,7 @@
     <Company>Quae Nocent Docent</Company>
     <Copyright>Copyright (c) QND. All rights reserved.</Copyright>
     <DelaySigning>False</DelaySigning>
-    <AssemblyOriginatorKeyFile>C:\Local\Dev\OpsMgr\Firma\QND1.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Users\danie_000\OneDrive\Dev\OpsMgr\Firma\QND1.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>false</DebugSymbols>
@@ -31,12 +31,12 @@
   </PropertyGroup>
   <ItemGroup>
     <ManagementPackReference Include="Microsoft.SystemCenter.DataWarehouse.Library">
-      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.SystemCenter.DataWarehouse.Library.mp</HintPath>
+      <HintPath>C:\Users\danie_000\OneDrive\Dev\OpsMgr\GIT\QND.Hyperv2012R2\MPLib\Microsoft.SystemCenter.DataWarehouse.Library.mp</HintPath>
       <Alias>MSDL</Alias>
       <MinVersion>7.1.10226.0</MinVersion>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.SystemCenter.InstanceGroup.Library">
-      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.SystemCenter.InstanceGroup.Library.mp</HintPath>
+      <HintPath>.\MpLib\Microsoft.SystemCenter.InstanceGroup.Library.mp</HintPath>
       <Alias>MSIL</Alias>
       <MinVersion>7.5.8501.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
@@ -46,19 +46,19 @@
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.HyperV.2012.R2.Discovery">
-      <HintPath>C:\Local\Dev\OpsMgr\MPLib2012\Microsoft.Windows.HyperV.2012.R2.Discovery.mp</HintPath>
+      <HintPath>.\MpLib\Microsoft.Windows.HyperV.2012.R2.Discovery.mp</HintPath>
       <Alias>Hyperv2012R2</Alias>
       <MinVersion>7.1.10104.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.HyperV.2012.R2.Monitoring">
-      <HintPath>C:\Local\Dev\OpsMgr\MPLib2012\Microsoft.Windows.HyperV.2012.R2.Monitoring.mp</HintPath>
+      <HintPath>.\MpLib\Microsoft.Windows.HyperV.2012.R2.Monitoring.mp</HintPath>
       <Alias>HVMon</Alias>
       <MinVersion>7.1.10104.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.HyperV.Library">
-      <HintPath>C:\Local\Dev\OpsMgr\MPLib2012\Microsoft.Windows.HyperV.Library.mp</HintPath>
+      <HintPath>.\MpLib\Microsoft.Windows.HyperV.Library.mp</HintPath>
       <Alias>HVLib</Alias>
       <MinVersion>7.1.10104.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
@@ -68,13 +68,13 @@
       <PackageToBundle>false</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.Server.Library">
-      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.Windows.Server.Library.mp</HintPath>
+      <HintPath>C:\Users\danie_000\OneDrive\Dev\OpsMgr\GIT\QND.Hyperv2012R2\MPLib\Microsoft.Windows.Server.Library.mp</HintPath>
       <Alias>WSLib</Alias>
-      <MinVersion>6.0.6959.1</MinVersion>
+      <MinVersion>6.0.7230.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="System.Hardware.Library">
-      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\System.Hardware.Library.mp</HintPath>
+      <HintPath>.\MpLib\System.Hardware.Library.mp</HintPath>
       <Alias>SHL</Alias>
       <MinVersion>7.0.8433.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
@@ -92,13 +92,13 @@
       <PackageToBundle>false</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="System.Performance.Library">
-      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\System.Performance.Library.mp</HintPath>
+      <HintPath>.\MpLib\System.Performance.Library.mp</HintPath>
       <Alias>Perf</Alias>
       <MinVersion>7.0.8433.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="System.Virtualization.Library">
-      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\System.Virtualization.Library.mp</HintPath>
+      <HintPath>.\MpLib\System.Virtualization.Library.mp</HintPath>
       <Alias>Virtualization</Alias>
       <MinVersion>7.0.8433.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
