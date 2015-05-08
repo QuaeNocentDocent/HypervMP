@@ -45,6 +45,12 @@
       <Alias>SC</Alias>
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.Cluster.Library">
+      <HintPath>C:\Users\danie_000\OneDrive\Dev\OpsMgr\GIT\QND.Hyperv2012R2\MPLib\Microsoft.Windows.Cluster.Library.mp</HintPath>
+      <Alias>Cluster</Alias>
+      <MinVersion>7.0.8433.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.HyperV.2012.R2.Discovery">
       <HintPath>.\MpLib\Microsoft.Windows.HyperV.2012.R2.Discovery.mp</HintPath>
       <Alias>Hyperv2012R2</Alias>
@@ -66,6 +72,12 @@
     <ManagementPackReference Include="Microsoft.Windows.Library">
       <Alias>Windows</Alias>
       <PackageToBundle>false</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.Server.2012.R2.Discovery">
+      <HintPath>C:\Users\danie_000\OneDrive\Dev\OpsMgr\GIT\QND.Hyperv2012R2\MPLib\Microsoft.Windows.Server.2012.R2.Discovery.mp</HintPath>
+      <Alias>Win2012R2</Alias>
+      <MinVersion>6.0.7230.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.Server.Library">
       <HintPath>C:\Users\danie_000\OneDrive\Dev\OpsMgr\GIT\QND.Hyperv2012R2\MPLib\Microsoft.Windows.Server.Library.mp</HintPath>
@@ -105,15 +117,27 @@
     </ManagementPackReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClusterMonitors.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DiagnosticTasks.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DynamicVMDiscovery.mpx">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Groups.mpx">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HyperV.Cluster.Discovery.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="HypervHostPerfRules.mptg.mpx">
       <SubType>Code</SubType>
       <DependentUpon>HypervHostPerfRules.mptg</DependentUpon>
+    </Compile>
+    <Compile Include="RecoveryTasks.mpx">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="VMGenericMonitors.mpx">
       <SubType>Code</SubType>
@@ -164,6 +188,7 @@
     <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\ClusterNodesStatusProbe.vbs" />
     <EmbeddedResource Include="Scripts\Discover-PrimaryReplicaVM.ps1" />
     <EmbeddedResource Include="Scripts\Discover-VM.ps1" />
     <EmbeddedResource Include="Scripts\Get-VHDStats.ps1" />
@@ -174,8 +199,11 @@
     <EmbeddedResource Include="Scripts\Get-VMReplicaStatus.ps1" />
     <EmbeddedResource Include="Scripts\Get-VMSnapshotAge.ps1" />
     <EmbeddedResource Include="Scripts\Get-VMUptime.ps1" />
+    <EmbeddedResource Include="Scripts\GetNetBIOSComputerName.vbs" />
     <EmbeddedResource Include="Scripts\Resume-VMReplicaWA.ps1" />
     <EmbeddedResource Include="Scripts\Start-VMAction.ps1" />
+    <EmbeddedResource Include="Scripts\VMFailBackToPreferredNodeAction.ps1" />
+    <EmbeddedResource Include="Scripts\VMPreferredHostWMIProbe.ps1" />
     <EmbeddedResource Include="Scripts\Write-Me.ps1" />
     <EmbeddedResource Include="Scripts\Write-TriggerEvent.ps1" />
   </ItemGroup>

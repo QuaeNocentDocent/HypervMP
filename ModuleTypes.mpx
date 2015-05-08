@@ -319,7 +319,39 @@
         </ModuleImplementation>
         <OutputType>Perf!System.Performance.Data</OutputType>
       </DataSourceModuleType>
- 
+
+      <DataSourceModuleType ID="QND.Hyperv2012R2.VM.Cluster.Resource.WMI.DS" Accessibility="Internal" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="SyncTime" type="xsd:string" />
+          <xsd:element minOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+        </OverrideableParameters>
+        <ModuleImplementation Isolation="Any">
+          <Composite>
+            <MemberModules>
+              <DataSource ID="Schedule" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <SyncTime>$Config/SyncTime$</SyncTime>
+              </DataSource>
+              <ProbeAction ID="Probe" TypeID="QND.Hyperv2012R2.VM.Cluster.Resource.WMI.PT">
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Probe">
+                <Node ID="Schedule" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>
+
       <!--
       <ConditionDetectionModuleType ID="System.Performance.DeltaValueCondition" Accessibility="Public" Batching="false" Stateful="true" PassThrough="false">
         <Configuration>
@@ -746,6 +778,62 @@
         <OutputType>System!System.PropertyBagData</OutputType>
         <InputType>System!System.BaseData</InputType>
       </ProbeActionModuleType>
+
+      <ProbeActionModuleType ID="QND.Hyperv2012R2.VM.Cluster.Resource.WMI.PT" Accessibility="Internal" Batching="false" PassThrough="false">
+        <Configuration>
+          <xsd:element minOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+        </OverrideableParameters>
+        <ModuleImplementation Isolation="Any">
+          <Composite>
+            <MemberModules>
+              <ProbeAction ID="Probe" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagTriggerOnlyProbe">
+                <ScriptName>VMPreferredHostWMIProbe.ps1</ScriptName>
+                <ScriptBody>$IncludeFileContent/Scripts/VMPreferredHostWMIProbe.ps1$</ScriptBody>
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Probe" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <TriggerOnly>true</TriggerOnly>
+      </ProbeActionModuleType>
+      <ProbeActionModuleType ID="QND.Hyperv2012R2.HyperV.Cluster.Node.Status.PT" Accessibility="Internal" Batching="false" PassThrough="false">
+        <Configuration>
+          <xsd:element minOccurs="1" name="ClusterName" type="xsd:string" />
+          <xsd:element minOccurs="1" name="VMsOnWrongHost" type="xsd:string" />
+          <xsd:element minOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+        </OverrideableParameters>
+        <ModuleImplementation Isolation="Any">
+          <Composite>
+            <MemberModules>
+              <ProbeAction ID="PassThru" TypeID="System!System.PassThroughProbe" />
+              <ProbeAction ID="Script" TypeID="Windows!Microsoft.Windows.ScriptPropertyBagProbe">
+                <ScriptName>ClusterNodesStatusProbe.vbs</ScriptName>
+                <Arguments>$Config/ClusterName$ $Config/VMsOnWrongHost$</Arguments>
+                <ScriptBody>$IncludeFileContent/Scripts/ClusterNodesStatusProbe.vbs$</ScriptBody>
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Script">
+                <Node ID="PassThru" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <TriggerOnly>true</TriggerOnly>
+      </ProbeActionModuleType>
+
       <ConditionDetectionModuleType ID="QND.Hyperv.2012R2.DeltaPerSecAndFilter" Accessibility="Public" Batching="false" Stateful="true" PassThrough="false">
         <Configuration>
           <xsd:element minOccurs="1" maxOccurs="1" name="NumSamples" type="xsd:unsignedInt"/>

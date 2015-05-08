@@ -1,0 +1,56 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Monitors>
+      <UnitMonitor ID="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor" Accessibility="Public" Enabled="true" Target="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole" ParentMonitorID="Health!System.Health.ConfigurationState" Remotable="true" Priority="Normal" TypeID="QND.Hyperv2012R2.VM.Cluster.Resource.Owning.Node.MT" ConfirmDelivery="true">
+        <Category>ConfigurationHealth</Category>
+        <AlertSettings AlertMessage="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>Error</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Data/Context/Property[@Name='VMsOnWrongHost']$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="ERROR" MonitorTypeStateID="ERROR" HealthState="Error" />
+          <OperationalState ID="OK" MonitorTypeStateID="OK" HealthState="Success" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>86400</IntervalSeconds>
+          <SyncTime>1:00</SyncTime>
+          <TimeoutSeconds>600</TimeoutSeconds>
+        </Configuration>
+      </UnitMonitor>
+    </Monitors>
+  </Monitoring>
+  <Presentation>
+    <StringResources>
+      <StringResource ID="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor.AlertMessage"/>
+    </StringResources>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor">
+          <Name>Hyper-V - VM Current Cluster Node Monitor</Name>
+          <Description>This monitor checks if virtual machines are hosted by one of their preferred hosts</Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor" SubElementID="ERROR">
+          <Name>ERROR</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor" SubElementID="OK">
+          <Name>OK</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor.AlertMessage">
+          <Name>Hyper-V - Virtual Machine current hosted on non-preferred Hyper-V cluster node</Name>
+          <Description>
+            The Follwoing virtual machines are not currently hosted by the preferred host:
+            {0}
+          </Description>
+        </DisplayString>
+
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

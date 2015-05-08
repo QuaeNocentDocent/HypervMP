@@ -10,7 +10,7 @@
   </TypeDefinitions>
   <Monitoring>
     <Discoveries>
-      <Discovery ID="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole.Discovery" Target="Win2012R2!Microsoft.Windows.Server.2012.R2.Computer" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+      <Discovery ID="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole.Discovery" Target="Cluster!Microsoft.Windows.Cluster.VirtualServer" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal">
         <Category>Discovery</Category>
         <DiscoveryTypes>
           <DiscoveryClass TypeID="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole">
@@ -21,7 +21,7 @@
           <IntervalSeconds>3600</IntervalSeconds>
           <SyncTime />
           <ScriptName>ClusterDiscovery.vbs</ScriptName>
-          <Arguments>$MPElement$ $Target/Id$ $Target/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$ "Virtual Machine" "Virtual Machine %" "$Target/Property[Type="Windows!Microsoft.Windows.Server.Computer"]/IsVirtualNode$"</Arguments>
+          <Arguments>$MPElement$ $Target/Id$ $Target/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$ "Virtual Machine" "%"</Arguments>
           <ScriptBody>
 '========================================================
 ' AUTHOR:         	Tao Yang
@@ -36,10 +36,6 @@ ManagedEntityID = WScript.Arguments(1)
 strComputer = WScript.Arguments(2)
 strCLResType = WScript.Arguments(3)
 strCLResName = WScript.Arguments(4)
-'IsVirtualNode property from Windows.Server.Computer class is either true or empty. never false
-IF NOT IsNull(WScript.Arguments(5)) THEN
-  bIsVirtualNode = WScript.Arguments(5)
-END IF
 
 'Declare variables
 const HKEY_LOCAL_MACHINE = &amp;H80000002
@@ -47,8 +43,6 @@ const HKEY_LOCAL_MACHINE = &amp;H80000002
 Set oAPI = CreateObject("MOM.ScriptAPI")
 Set oDiscoveryData = oAPI.CreateDiscoveryData(0,SourceID,ManagedEntityID)
 
-'Only continue if IsVirtualNode = "True"
-IF UCase(bIsVirtualNode) = "TRUE" Then
   'Check if Failover Cluster service exists
   strKeyPath = "SYSTEM\CurrentControlSet\Services\ClusSvc"
   'connect to the registry provider
@@ -81,7 +75,6 @@ IF UCase(bIsVirtualNode) = "TRUE" Then
             END IF
             END IF
             End If
-            END IF
             oAPI.Return oDiscoveryData
           </ScriptBody>
           <TimeoutSeconds>120</TimeoutSeconds>

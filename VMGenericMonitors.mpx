@@ -28,11 +28,40 @@
           <PressureThreshold>105</PressureThreshold>
         </Configuration>
       </UnitMonitor>
+      <UnitMonitor ID="QND.Hyperv2012R2.VMName.Matches.ComputerName.Monitor" Accessibility="Public" Enabled="true" ConfirmDelivery="false"
+                   ParentMonitorID="Health!System.Health.ConfigurationState" Priority="Normal" Remotable="true"
+                   Target="QND.Hyperv.2012R2.VM" TypeID ="QND.Hyperv2012R2.VMName.ComputerName.Match.MT">
+        <Category>ConfigurationHealth</Category>
+        <AlertSettings AlertMessage="QND.Hyperv2012R2.VMName.Matches.ComputerName.Monitor.AlertMessage">
+          <AlertOnState>Warning</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>Warning</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="QND.Hyperv.2012R2.VM"]/VMComputerName$</AlertParameter1>
+            <AlertParameter2>$Target/Property[Type="QND.Hyperv.2012R2.VM"]/VirtualMachineName$</AlertParameter2>
+            <AlertParameter3>$Data/Context/Property[@Name='NetBIOSName']$</AlertParameter3>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="NamesMatch" MonitorTypeStateID="NamesMatch" HealthState="Success" />
+          <OperationalState ID="NamesDoNotMatch" MonitorTypeStateID="NamesDoNotMatch" HealthState="Warning" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>86400</IntervalSeconds>
+          <SyncTime />
+          <ComputerFQDN>$Target/Property[Type="QND.Hyperv.2012R2.VM"]/VMComputerName$</ComputerFQDN>
+          <VMName>$Target/Property[Type="QND.Hyperv.2012R2.VM"]/VirtualMachineName$</VMName>
+          <TimeoutSeconds>300</TimeoutSeconds>
+        </Configuration>
+      </UnitMonitor>
+
     </Monitors>
   </Monitoring>
   <Presentation>
     <StringResources>
       <StringResource ID="QND.Hyperv.2012R2.VMMemoryStatus.AlertMessage"/>
+      <StringResource ID="QND.Hyperv2012R2.VMName.Matches.ComputerName.Monitor.AlertMessage"/>      
     </StringResources>
   </Presentation>
   <LanguagePacks>
@@ -48,6 +77,20 @@
           Current Pressure Level:{2}
         </Description>
         </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VMName.Matches.ComputerName.Monitor">
+          <Name>Hyper-V - VM Name Matches Computer Name Monitor</Name>
+          <Description>This montior compares the Hyper-V virtual machine name with the VM's computer name. It raises alerts when the virtual machine name does not match the VM's computer name.</Description>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VMName.Matches.ComputerName.Monitor.AlertMessage">
+          <Name>Hyper-V - Virtual machine name does not match the VM's computer name</Name>
+          <Description>
+            The Hyper-V virtual machine name for {1} does not matche the VM's computer name.
+
+            VM Computer FQDN: {0}
+            VM Computer NetBIOS Name: {2}
+          </Description>
+        </DisplayString>
+
       </DisplayStrings>
     </LanguagePack>
   </LanguagePacks>

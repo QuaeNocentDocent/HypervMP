@@ -1,0 +1,46 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Recoveries>
+      <Recovery ID="QND.Hyperv2012R2.Move.VMs.To.Preferred.Nodes.Recovery" Accessibility="Internal" Enabled="true" Target="QND.Hyperv2012R2.HyperV.Cluster.ComputerRole" Monitor="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor" ResetMonitor="true" ExecuteOnDiagnostic="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor.Check.Cluster.State.Diagnostic" Remotable="true" Timeout="900">
+        <Category>Custom</Category>
+        <ConditionDetection ID="FilterDiagnostic" TypeID="System!System.ExpressionFilter">
+          <Expression>
+            <SimpleExpression>
+              <ValueExpression>
+                <XPathQuery Type="String">Diagnostic/DataItem/Property[@Name='Healthy']</XPathQuery>
+              </ValueExpression>
+              <Operator>Equal</Operator>
+              <ValueExpression>
+                <Value Type="String">true</Value>
+              </ValueExpression>
+            </SimpleExpression>
+          </Expression>
+        </ConditionDetection>
+        <WriteAction ID="PSScript" TypeID="Windows!Microsoft.Windows.PowerShellWriteAction">
+          <ScriptName>VMFailBackToPreferredNodeAction.ps1</ScriptName>
+          <ScriptBody>$IncludeFileContent/Scripts/VMFailBackToPreferredNodeAction.ps1$</ScriptBody>
+          <Parameters>
+            <Parameter>
+              <Name>ClusterName</Name>
+              <Value>$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$</Value>
+            </Parameter>
+            <Parameter>
+              <Name>VirtualMachines</Name>
+              <Value>$Data/Diagnostic/DataItem/Property[@Name='VMsOnWrongHost']$</Value>
+            </Parameter>
+          </Parameters>
+          <TimeoutSeconds>900</TimeoutSeconds>
+        </WriteAction>
+      </Recovery>
+    </Recoveries>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv2012R2.Move.VMs.To.Preferred.Nodes.Recovery">
+          <Name>Move VMs To Preferred Nodes Recovery</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>
