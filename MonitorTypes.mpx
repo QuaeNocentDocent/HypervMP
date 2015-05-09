@@ -719,14 +719,23 @@
         </OverrideableParameters>
         <MonitorImplementation>
           <MemberModules>
-            <DataSource ID="DS" TypeID="Windows!Microsoft.Windows.TimedScript.PropertyBagProvider">
-              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
-              <SyncTime>$Config/SyncTime$</SyncTime>
+            <DataSource ID="DS" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <SyncTime>$Config/SyncTime$</SyncTime>
+             </DataSource>
+            <ProbeAction ID="Parse" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagProbe">
               <ScriptName>GetNetBIOSCOmputerName.vbs</ScriptName>
-              <Arguments>$Config/ComputerFQDN$</Arguments>
-              <ScriptBody>$IncludeFileContent/Scripts/GetNetBIOSCOmputerName.vbs$</ScriptBody>
-              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
-            </DataSource>
+                <ScriptBody>
+                  $IncludeFileContent/Scripts/Get-VMNBName.ps1$
+                </ScriptBody>
+                <Parameters>
+                  <Parameter>
+                    <Name>VMName</Name>
+                    <Value>$Config/ComputerFQDN$</Value>
+                  </Parameter>
+                </Parameters>
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>              
+            </ProbeAction>
             <ConditionDetection ID="FilterMatch" TypeID="System!System.ExpressionFilter">
               <Expression>
               <Or>
@@ -787,12 +796,16 @@
           <RegularDetections>
             <RegularDetection MonitorTypeStateID="NamesMatch">
               <Node ID="FilterMatch">
+                <Node ID="Parse">
                 <Node ID="DS" />
+                </Node>
               </Node>
             </RegularDetection>
             <RegularDetection MonitorTypeStateID="NamesDoNotMatch">
               <Node ID="FilterNotMatch">
+                <Node ID="Parse">
                 <Node ID="DS" />
+                </Node>
               </Node>
             </RegularDetection>
           </RegularDetections>
