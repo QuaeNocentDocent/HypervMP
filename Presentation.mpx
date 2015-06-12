@@ -9,7 +9,7 @@
         <Presentation>
           <ColumnInfo Index="0" SortIndex="0" Width="100" Grouped="false" Sorted="true" IsSortable="true" Visible="true" SortOrder="Descending">
             <Name>State</Name>
-            <Id>QND.Hyperv.2012R2.VM-*-c9c9b532-a2be-ee64-9d8c-38c47bf83460-*-Health</Id>
+            <Id>QND.Hyperv.2012R2.VM</Id>
           </ColumnInfo>
           <ColumnInfo Index="1" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
             <Name>Maintenance Mode</Name>

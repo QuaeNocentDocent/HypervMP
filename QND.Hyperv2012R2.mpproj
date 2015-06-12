@@ -18,7 +18,7 @@
     <Company>Quae Nocent Docent</Company>
     <Copyright>Copyright (c) QND. All rights reserved.</Copyright>
     <DelaySigning>False</DelaySigning>
-    <AssemblyOriginatorKeyFile>C:\Users\danie_000\OneDrive\Dev\OpsMgr\Firma\QND1.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Users\tyang\OneDrive\MPDev\Keys\HyperV.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>false</DebugSymbols>
@@ -34,6 +34,7 @@
       <HintPath>C:\Users\danie_000\OneDrive\Dev\OpsMgr\GIT\QND.Hyperv2012R2\MPLib\Microsoft.SystemCenter.DataWarehouse.Library.mp</HintPath>
       <Alias>MSDL</Alias>
       <MinVersion>7.1.10226.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.SystemCenter.InstanceGroup.Library">
       <HintPath>.\MpLib\Microsoft.SystemCenter.InstanceGroup.Library.mp</HintPath>
@@ -71,16 +72,16 @@
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.Library">
       <Alias>Windows</Alias>
-      <PackageToBundle>false</PackageToBundle>
+      <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.Server.2012.R2.Discovery">
-      <HintPath>C:\Users\danie_000\OneDrive\Dev\OpsMgr\GIT\QND.Hyperv2012R2\MPLib\Microsoft.Windows.Server.2012.R2.Discovery.mp</HintPath>
+      <HintPath>C:\Documents\MPRef\Microsoft.Windows.Server.2012.R2.Discovery.mp</HintPath>
       <Alias>Win2012R2</Alias>
       <MinVersion>6.0.7230.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.Server.Library">
-      <HintPath>C:\Users\danie_000\OneDrive\Dev\OpsMgr\GIT\QND.Hyperv2012R2\MPLib\Microsoft.Windows.Server.Library.mp</HintPath>
+      <HintPath>C:\Documents\MPRef\Microsoft.Windows.Server.Library.mp</HintPath>
       <Alias>WSLib</Alias>
       <MinVersion>6.0.7230.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
@@ -93,15 +94,15 @@
     </ManagementPackReference>
     <ManagementPackReference Include="System.Health.Library">
       <Alias>Health</Alias>
-      <PackageToBundle>false</PackageToBundle>
+      <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="System.Library">
       <Alias>System</Alias>
-      <PackageToBundle>false</PackageToBundle>
+      <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.SystemCenter.Visualization.Library">
       <Alias>Visualization</Alias>
-      <PackageToBundle>false</PackageToBundle>
+      <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="System.Performance.Library">
       <HintPath>.\MpLib\System.Performance.Library.mp</HintPath>
@@ -118,6 +119,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClusterMonitors.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConsoleTasks.mpx">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DiagnosticTasks.mpx">
