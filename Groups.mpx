@@ -3,6 +3,8 @@
     <EntityTypes>
       <ClassTypes>
         <ClassType ID="QND.Hyperv.2012R2.UnixVM.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true"></ClassType>
+        <ClassType ID="QND.HyperV.Server.Computer.And.Health.Service.Watcher.Group" Accessibility="Public" Abstract="false" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Hosted="false" Singleton="true" />
+        <ClassType ID="QND.HyperV.Server.Role.Group" Accessibility="Public" Abstract="false" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Hosted="false" Singleton="true" />
       </ClassTypes>
     </EntityTypes>
   </TypeDefinitions>
@@ -35,6 +37,62 @@
           </MembershipRules>
         </DataSource>
       </Discovery>
+      <Discovery ID="QND.HyperV.Server.Computer.And.Health.Service.Watcher.Group.Discovery" Enabled="true" Target="QND.HyperV.Server.Computer.And.Health.Service.Watcher.Group" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$MPElement[Name="QND.HyperV.Server.Computer.And.Health.Service.Watcher.Group"]$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="Windows!Microsoft.Windows.Computer"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+              <Expression>
+                <Contains>
+                  <MonitoringClass>$MPElement[Name="HVLib!Microsoft.Windows.HyperV.ServerRole"]$</MonitoringClass>
+                </Contains>
+              </Expression>
+            </MembershipRule>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="SC!Microsoft.SystemCenter.HealthServiceWatcher"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+              <Expression>
+                <Contains>
+                  <MonitoringClass>$MPElement[Name="SC!Microsoft.SystemCenter.HealthService"]$</MonitoringClass>
+                  <Expression>
+                    <Contained>
+                      <MonitoringClass>$MPElement[Name="Windows!Microsoft.Windows.Computer"]$</MonitoringClass>
+                      <Expression>
+                        <Contained>
+                          <MonitoringClass>$Target/Id$</MonitoringClass>
+                        </Contained>
+                      </Expression>
+                    </Contained>
+                  </Expression>
+                </Contains>
+              </Expression>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
+      <Discovery ID="QND.HyperV.Server.Role.Group.Discovery" Enabled="true" Target="QND.HyperV.Server.Role.Group" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$MPElement[Name="QND.HyperV.Server.Role.Group"]$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="HVLib!Microsoft.Windows.HyperV.ServerRole"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
     </Discoveries>
   </Monitoring>
   <LanguagePacks>
@@ -42,6 +100,21 @@
       <DisplayStrings>
         <DisplayString ElementID="QND.Hyperv.2012R2.UnixVM.Group">
           <Name>Hyper-V - Linux Virtual Machines</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.UnixVM.Group.Discovery">
+          <Name>Hyper-V - Linux Virtual Machines group discovery</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.Server.Computer.And.Health.Service.Watcher.Group">
+          <Name>Hyper-V Server Computer and Health Service Watcher Group</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.Server.Computer.And.Health.Service.Watcher.Group.Discovery">
+          <Name>Hyper-V Server Computer and Health Service Watcher Group Discovery</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.Server.Role.Group">
+          <Name>Hyper-V Server Group</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.HyperV.Server.Role.Group.Discovery">
+          <Name>Hyper-V Server Group Discovery</Name>
         </DisplayString>
       </DisplayStrings>
     </LanguagePack>

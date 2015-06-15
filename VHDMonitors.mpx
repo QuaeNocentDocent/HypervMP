@@ -2,7 +2,7 @@
   <Monitoring>
     <Monitors>
       <!-- see http://blogs.msdn.com/b/virtual_pc_guy/archive/2015/03/04/checking-and-correcting-virtual-hard-disk-fragmentation.aspx -->
-      <UnitMonitor ID="QND.Hyperv.2012R2.VHDFragmentation.Monitor" Accessibility="Public" Enabled="true" Target="QND.HyperV.2012R2.VirtualDrive"
+      <UnitMonitor ID="QND.Hyperv.2012R2.VHDFragmentation.Monitor" Accessibility="Public" Enabled="false" Target="QND.HyperV.2012R2.VirtualDrive"
         ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="QND.Hyperv2012R2.VHDFragmentation.MT" ConfirmDelivery="false">
         <Category>AvailabilityHealth</Category>
         <AlertSettings AlertMessage="QND.Hyperv.2012R2.VHDFragmentation.Monitor.AlertMessage">
