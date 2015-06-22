@@ -110,9 +110,120 @@
         </Presentation>
         <Target />
       </View>
+      <View ID="QND.Hyperv.2012R2.VirtualDrive.State.View" Accessibility="Public" Enabled="true" Target="QND.HyperV.2012R2.VirtualDrive" TypeID="SC!Microsoft.SystemCenter.StateViewType" Visible="true">
+        <Category>Operations</Category>
+        <Criteria>
+          <InMaintenanceMode>false</InMaintenanceMode>
+        </Criteria>
+        <Presentation>
+          <ColumnInfo Index="0" SortIndex="-1" Width="100" Grouped="false" Sorted="true" IsSortable="true" Visible="true" SortOrder="Descending">
+            <Name>State</Name>
+            <Id>QND.HyperV.2012R2.VirtualDrive</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="1" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Maintenance Mode</Name>
+            <Id>InMaintenanceMode</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="2" SortIndex="0" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Name</Name>
+            <Id>Name</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="3" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Path</Name>
+            <Id>Path</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="4" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="false" SortOrder="Ascending">
+            <Name>Display Name</Name>
+            <Id>System.Entity/DisplayName</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="5" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Device Id</Name>
+            <Id>QND.HyperV.VMHardwareComponent/DeviceIs</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="6" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Image File</Name>
+            <Id>QND.HyperV.2012R2.VirtualDrive/ImageFile</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="7" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>VHD Type</Name>
+            <Id>QND.HyperV.2012R2.VirtualDrive/VHDType</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="8" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>VHD Format</Name>
+            <Id>QND.HyperV.2012R2.VirtualDrive/VHDFormat</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="9" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="false" SortOrder="Ascending">
+            <Name>Connected Controller Name</Name>
+            <Id>QND.Hyperv.2012R2.VirtualDrive/ConnectedControllerName</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="10" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Max Size (GB)</Name>
+            <Id>QND.Hyperv.2012R2.VirtualDrive/MaxSizeGB</Id>
+          </ColumnInfo>
+        </Presentation>
+        <Target />
+      </View>
+      <View ID="QND.Hyperv.2012R2.VirtualNetworkAdapter.State.View" Accessibility="Public" Enabled="true" Target="QND.HyperV.2012R2.VirtualNetworkAdapter" TypeID="SC!Microsoft.SystemCenter.StateViewType" Visible="true">
+        <Category>Operations</Category>
+        <Criteria>
+          <InMaintenanceMode>false</InMaintenanceMode>
+        </Criteria>
+        <Presentation>
+          <ColumnInfo Index="0" SortIndex="-1" Width="100" Grouped="false" Sorted="true" IsSortable="true" Visible="true" SortOrder="Descending">
+            <Name>State</Name>
+            <Id>QND.HyperV.2012R2.VirtualNetworkAdapter</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="1" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Maintenance Mode</Name>
+            <Id>InMaintenanceMode</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="2" SortIndex="0" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Name</Name>
+            <Id>Name</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="3" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Path</Name>
+            <Id>Path</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="4" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="false" SortOrder="Ascending">
+            <Name>Display Name</Name>
+            <Id>System.Entity/DisplayName</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="5" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Device Id</Name>
+            <Id>QND.HyperV.VMHardwareComponent/DeviceIs</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="6" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>Image File</Name>
+            <Id>QND.HyperV.2012R2.VirtualNetworkAdapter/SwitchId</Id>
+          </ColumnInfo>
+          <ColumnInfo Index="7" SortIndex="-1" Width="100" Grouped="false" Sorted="false" IsSortable="true" Visible="true" SortOrder="Ascending">
+            <Name>VHD Type</Name>
+            <Id>QND.HyperV.2012R2.VirtualNetworkAdapter/SwitchName</Id>
+          </ColumnInfo>
+        </Presentation>
+        <Target />
+      </View>
+      <View ID="QND.Hyperv.2012R2.VirtualMachine.Performance.View" Accessibility="Public" Target="QND.Hyperv.2012R2.VM" TypeID="SC!Microsoft.SystemCenter.PerformanceViewType">
+        <Category>PerformanceCollection</Category>
+        <Criteria />
+      </View>
+      <View ID="QND.Hyperv.2012R2.VirtualDrive.Performance.View" Accessibility="Public" Target="QND.HyperV.2012R2.VirtualDrive" TypeID="SC!Microsoft.SystemCenter.PerformanceViewType">
+        <Category>PerformanceCollection</Category>
+        <Criteria />
+      </View>
+      <View ID="QND.Hyperv.2012R2.VirtualNetworkAdapter.Performance.View" Accessibility="Public" Target="QND.HyperV.2012R2.VirtualNetworkAdapter" TypeID="SC!Microsoft.SystemCenter.PerformanceViewType">
+        <Category>PerformanceCollection</Category>
+        <Criteria />
+      </View>
     </Views>
     <FolderItems>
       <FolderItem ElementID="QND.Hyperv.2012R2.VirtualMachine.State.View" ID="QND.Hyperv.2012R2.VMState.Item" Folder="HVLib!Microsoft.Windows.HyperV.RootFolder" />
+      <FolderItem ElementID="QND.Hyperv.2012R2.VirtualDrive.State.View" ID="QND.Hyperv.2012R2.VirtualDriveState.Item" Folder="HVLib!Microsoft.Windows.HyperV.RootFolder" />
+      <FolderItem ElementID="QND.Hyperv.2012R2.VirtualNetworkAdapter.State.View" ID="QND.Hyperv.2012R2.VirtualNetworkAdapterState.Item" Folder="HVLib!Microsoft.Windows.HyperV.RootFolder" />
+      <FolderItem ElementID="QND.Hyperv.2012R2.VirtualMachine.Performance.View" ID="QND.Hyperv.2012R2.VMPerf.Item" Folder="HVLib!Microsoft.Windows.HyperV.RootFolder" />
+      <FolderItem ElementID="QND.Hyperv.2012R2.VirtualDrive.Performance.View" ID="QND.HyperV.2012R2.VirtualDrivePerf.Item" Folder="HVLib!Microsoft.Windows.HyperV.RootFolder" />
+      <FolderItem ElementID="QND.Hyperv.2012R2.VirtualNetworkAdapter.Performance.View" ID="QND.HyperV.2012R2.VirtualNetworkAdapterPerf.Item" Folder="HVLib!Microsoft.Windows.HyperV.RootFolder" />
     </FolderItems>
   </Presentation>
   <LanguagePacks>
@@ -120,6 +231,21 @@
       <DisplayStrings>
         <DisplayString ElementID="QND.Hyperv.2012R2.VirtualMachine.State.View">
           <Name>Hyper-V 2012 R2 Virtual Machines (QND)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VirtualDrive.State.View">
+          <Name>Hyper-V 2012 R2 Virtual Drives (QND)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VirtualNetworkAdapter.State.View">
+          <Name>Hyper-V 2012 R2 Virtual NIC (QND)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VirtualMachine.Performance.View">
+          <Name>Hyper-V 2012 R2 Virtual Machines Performance (QND)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VirtualDrive.Performance.View">
+          <Name>Hyper-V 2012 R2 Virtual Drives Performance (QND)</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv.2012R2.VirtualNetworkAdapter.Performance.View">
+          <Name>Hyper-V 2012 R2 Virtual NIC Performance (QND)</Name>
         </DisplayString>
       </DisplayStrings>
     </LanguagePack>
