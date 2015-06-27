@@ -2,9 +2,9 @@
 #SET ErrorLevel to 5 so show discovery info
 
 #*************************************************************************
-# Script Name - $ScriptName$
+# Script Name - Discover-VM.ps1
 # Author	  -  - Progel spa
-# Version  - $Version$ 24.09.2007
+# Version  - 24.09.2007
 # Purpose     - 
 #               
 # Assumptions - 

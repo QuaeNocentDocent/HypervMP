@@ -1,9 +1,9 @@
-﻿#TO SHOW VERBOSE MESSAGES SET $VerbosePreference="continue"
+#TO SHOW VERBOSE MESSAGES SET $VerbosePreference="continue"
 #SET ErrorLevel to 5 so show discovery info
 
 #*************************************************************************
-# Script Name - Get-VMUptime.ps1
-# Author	  -  - Progel spa
+# Script Name - Get-VHDSizePerVM.ps1
+# Author	  -  - Tao Yang (based on Get-VHDStats.ps1 from Progel spa)
 # Version  - 1.0 24.09.2007
 # Purpose     - 
 #               
@@ -34,16 +34,13 @@
 
 
 # Get the named parameters
-param([int]$traceLevel=$(throw 'must have a value'),
-	[string]$MGGuid,
-	[string]$VMGuid)
-
+param([int]$traceLevel=$(throw 'must have a value'))
 
 	[Threading.Thread]::CurrentThread.CurrentCulture = "en-US"        
 	[Threading.Thread]::CurrentThread.CurrentUICulture = "en-US"
 	
 #Constants used for event logging
-$SCRIPT_NAME			= "Get-VMUptime.ps1"
+$SCRIPT_NAME			= "Get-VHDSizePerVM.ps1"
 $SCRIPT_ARGS = 1
 $SCRIPT_STARTED			= 831
 $PROPERTYBAG_CREATED	= 832
@@ -138,42 +135,10 @@ Function NullIsZero
 	if(! $value) {return 0}
 	return $value
 }
-
-Function Process-VM
-{
-	param($vm)
-	$lastCheck = [xml] (Get-Content -Path "$($vm.Path)\$MGGuid-UpTimeCheck.xml" -ErrorAction SilentlyContinue)
-	$vmUpTime = NullIsZero $vm.Uptime.TotalHours
-	if(! $lastCheck) {
-		$lastCheck = "<LastUptimeCheck><Uptime>$vmUpTime</Uptime><Check>$timeNow</Check></LastUptimeCheck>"
-		Log-Event $START_EVENT_ID $EVENT_TYPE_INFORMATION ("No previous uptime data exists for $($vm.Name)") $TRACE_INFO
-		$lastCheck | Out-File -FilePath "$($vm.Path)\$MGGuid-UpTimeCheck.xml" -Force
-		return;
-	}
-	$lastTotalHours = [double] ($lastCheck.LastUptimeCheck.Uptime)
-	$lastDateCheck = [DateTime] ($lastCheck.LastUptimeCheck.Check)
-			
-	$uptimeInperiod = $vm.Uptime.TotalHours - $lastTotalHours
-	if($uptimeInPeriod -le 0) {$uptimeInPeriod = $vm.Uptime.TotalHours}
-	$elapsedInPeriod = ($timeNow - $lastDateCheck).TotalHours
-	$percUptime = [math]::Round($uptimeInperiod/$elapsedInPeriod * 100,2)
-	if($percUptime -gt 100){$percUptime=100.00}
-	$lastCheck = "<LastUptimeCheck><Uptime>$vmUpTime</Uptime><Check>$TimeNow</Check></LastUptimeCheck>"
-	$lastCheck | Out-File -FilePath "$($vm.Path)\$MGGuid-UpTimeCheck.xml" -Force
-
-	$bag = $g_api.CreatePropertyBag()
-	$bag.AddValue('VMId',$vm.VMId.ToString())
-	$bag.AddValue('PercUptime', (NullIsZero $percUptime))
-	$bag.AddValue('TotalUptime',(NullIsZero $vm.Uptime.TotalHours))
-	$bag.AddValue('UptimeInPeriod',(NullIsZero $uptimeInperiod))
-	#now return the disk data if we have any
-	$bag
-	Log-Event $START_EVENT_ID $EVENT_TYPE_INFO ("$($vm.Name) has been processed, uptime perc is $percUptime") $TRACE_VERBOSE
-}
 #Start by setting up API object.
 	$P_TraceLevel = $TRACE_VERBOSE
 	$g_Api = New-Object -comObject 'MOM.ScriptAPI'
-	$g_RegistryStatePath = "HKLM\" + $g_API.GetScriptStateKeyPath($SCRIPT_NAME) + "\$MGGuid"
+	#$g_RegistryStatePath = "HKLM\" + $g_API.GetScriptStateKeyPath($SCRIPT_NAME)
 
 	$dtStart = Get-Date
 	$P_TraceLevel = $traceLevel
@@ -189,21 +154,41 @@ try
 		Exit 1;
 	}
 
-	if ($VMGuid -ine 'ignore') {	#here we're in atask targeted at a specific VM
-		$vm = Get-VM | where {$_.VMId -ieq $VMGuid}
-		if($vm) {Process-VM $vm}
-		exit;
-	}
-
 	#$vms = @(gwmi Msvm_ComputerSystem -namespace "root\virtualization\v2" | where {$_.ReplicationMode -ne 0 -and $_.ReplicationMode -ne $null})
-	$timeNow = [DateTime]::Now
-	$VMs=Get-VM
-	foreach($vm in $VMs) {
+	$vms=Get-VM
+	foreach($vm in $vms) {
 		try {
-			Process-VM $vm
+			$HardDrives = $vm.HardDrives
+			$VHDs = Get-VHD -VMId $vm.VMId -ErrorAction SilentlyContinue
+			$TotalCurrentSize = 0
+			$TotalMaxSize = 0
+			$TotalMinSize = 0
+			foreach($hd in $HardDrives) {
+				$vhd = $VHDs| where {$_.Path -ieq $hd.Path}
+				
+				if($vhd) {
+					$TotalCurrentSize = $TotalCurrentSize + $vhd.FileSize
+					$TotalMaxSize = $TotalMaxSize + $vhd.Size
+					$TotalMinSize = $TotalMinSize + $vhd.MinimumSize
+					$minSizeGB = [math]::Round((NullIsZero ($vhd.MinimumSize/1GB)),2)
+				}
+
+				Log-Event $START_EVENT_ID $EVENT_TYPE_INFO ("$($vm.Name) - $($hs.Id) frag level $fragPerc") $TRACE_VERBOSE
+			}
+				$TotalCurrentSizeGB = [math]::Round((NullIsZero ($TotalCurrentSize/1GB)),2)
+				$TotalMaxSizeGB = [math]::Round((NullIsZero ($TotalMaxSize/1GB)),2)
+				$TotalMinSizeGB = [math]::Round((NullIsZero ($TotalMinSize/1GB)),2)
+				$bag = $g_api.CreatePropertyBag()
+				$bag.AddValue('VMId',$VM.VMId.ToString())
+				$bag.AddValue('VMName',$VM.VMName)
+				$bag.AddValue('CurrentSizeGB', $TotalCurrentSizeGB)
+				$bag.AddValue('MaxSizeGB',$TotalMaxSizeGB)
+				$bag.AddValue('MinSizeGB',$TotalMinSizeGB)
+				$bag
+			Log-Event $START_EVENT_ID $EVENT_TYPE_INFO ("$($vm.Name) has been processed") $TRACE_VERBOSE
 		}
 		Catch [Exception] {
-			Log-Event $START_EVENT_ID $EVENT_TYPE_WARNING ("$($vm.Name) error getting Uptime info $($Error[0].Exception)") $TRACE_WARNING
+			Log-Event $START_EVENT_ID $EVENT_TYPE_WARNING ("$($vm.Name) error getting disk info $($Error[0].Exception)") $TRACE_WARNING
 		}
 	}
 

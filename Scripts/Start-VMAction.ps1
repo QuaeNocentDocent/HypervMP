@@ -2,7 +2,7 @@
 #SET ErrorLevel to 5 so show discovery info
 
 #*************************************************************************
-# Script Name - Discover-PrimaryReplicaVM.ps1
+# Script Name - Start-VMAction.ps1
 # Author	  -  - Progel spa
 # Version  - 1.0 24.09.2007
 # Purpose     - 

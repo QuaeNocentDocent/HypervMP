@@ -183,6 +183,9 @@
       <SubType>Code</SubType>
       <DependentUpon>VMPerfRules.mptg</DependentUpon>
     </Compile>
+    <Compile Include="VMSizePerfRules.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="VMTasks.mptg.mpx">
       <SubType>Code</SubType>
       <DependentUpon>VMTasks.mptg</DependentUpon>
@@ -195,6 +198,7 @@
     <EmbeddedResource Include="Scripts\ClusterNodesStatusProbe.vbs" />
     <EmbeddedResource Include="Scripts\Discover-PrimaryReplicaVM.ps1" />
     <EmbeddedResource Include="Scripts\Discover-VM.ps1" />
+    <EmbeddedResource Include="Scripts\Get-VHDSizePerVM.ps1" />
     <EmbeddedResource Include="Scripts\Get-VMNBName.ps1" />
     <EmbeddedResource Include="Scripts\Get-VHDStats.ps1" />
     <EmbeddedResource Include="Scripts\Get-VMDetails.ps1" />
