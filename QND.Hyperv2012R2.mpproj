@@ -140,6 +140,9 @@
       <SubType>Code</SubType>
       <DependentUpon>HypervHostPerfRules.mptg</DependentUpon>
     </Compile>
+    <Compile Include="MonitorsKnowledgeArticles.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="RecoveryTasks.mpx">
       <SubType>Code</SubType>
     </Compile>

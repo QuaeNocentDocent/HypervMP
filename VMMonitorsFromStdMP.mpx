@@ -181,8 +181,7 @@
       </AggregateMonitor>
       -->
       <!-- don't know what it does and if it works -->
-      <UnitMonitor ID="QND.Windows.HyperV.2012.R2.VirtualDrive.FreeSpaceMonitor" Accessibility="Public" Enabled="onEssentialMonitoring" Target="QND.HyperV.2012R2.VirtualDrive" 
-                   ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="HVLib!Microsoft.Windows.HyperV.DiskFreeSpaceMonitorType" ConfirmDelivery="false">
+      <UnitMonitor ID="QND.Windows.HyperV.2012.R2.VirtualDrive.FreeSpaceMonitor" Accessibility="Public" Enabled="onEssentialMonitoring" Target="QND.HyperV.2012R2.VirtualDrive" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="HVLib!Microsoft.Windows.HyperV.DiskFreeSpaceMonitorType" ConfirmDelivery="false">
         <Category>AvailabilityHealth</Category>
         <OperationalStates>
           <OperationalState ID="EnoughSpace" MonitorTypeStateID="FreeSpaceAvailable" HealthState="Success" />

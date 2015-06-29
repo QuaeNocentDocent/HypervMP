@@ -1,0 +1,204 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <KnowledgeArticles>
+          <KnowledgeArticle ElementID="QND.Hyperv2012R2.VM.Current.Cluster.Node.Monitor" Visible="true">
+            <MamlContent>
+              <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+                <maml:title>Summary</maml:title>
+                <maml:para>This Monitor checks if any virtual machines on the Hyper-V Cluster are hosted by (one of) configured preferred node.</maml:para>
+              </maml:section>
+              <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+                <maml:title>Configuration</maml:title>
+                <maml:para>By default, this monitor runs once a day at 1:00am to check if all virtual machines on the Hyper-V cluster are hosted by (one of) their configured preferred cluster node. If it detects there are virtual machines hosted by a non-preferred node, a recovery task will run to fail them back to (one of) preferred node after a diagnostic task detects ALL cluster nodes are up.</maml:para>
+                <maml:para>The monitor and the recovery task use PowerShell scripts The PowerShell execution policy on each Hyper-V cluster node needs to be set to Unrestricted. </maml:para>
+              </maml:section>
+              <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+                <maml:title>Resolutions</maml:title>
+                <maml:para>The alert should be automatically closed after the recovery task has successfully moved all the virtual machines to their preferred hosts. If the alert is not closed automatically, please examine the diagnostic and recovery tasks execution results from OpsMgr Health Explorer.</maml:para>
+              </maml:section>
+            </MamlContent>
+          </KnowledgeArticle>
+        <KnowledgeArticle ElementID="QND.Hyperv2012R2.VMName.Matches.ComputerName.Monitor" Visible="true">
+          <MamlContent>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Summary</maml:title>
+              <maml:para>This montior compares the Hyper-V virtual machine name with the VM's computer name. It raises alerts when the virtual machine name does not match the VM's computer name.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Configuration</maml:title>
+              <maml:para>Generally speaking, when a VM is intially built, the virtual machine name would match the computer name. However, if later on the computer name has been changed in the Operating System on the VM, it may cause duplicate records for this computer in various System Center products such as OpsMgr and ConfigMgr. This monitor is designed to detect when the computer name configured on Operating System does not match the VM name and a warning alert is generated.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Resolutions</maml:title>
+              <maml:para>Rename the VM name to match the computer name. Review systems such as OpsMgr and ConfigMgr and remove the old obsolete agent / computer records.</maml:para>
+            </maml:section>
+          </MamlContent>
+        </KnowledgeArticle>
+        <KnowledgeArticle ElementID="QND.Hyperv.2012R2.VMMemoryStatus" Visible="true">
+          <MamlContent>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Summary</maml:title>
+              <maml:para>This montior monitors the amount of memory demanded by the VM vs amount of memory assigned to the VM.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Configuration</maml:title>
+              <maml:para>This montior calcuate the VM memory pressure percentage using the formula: MemoryDemand / MemoryAssigned. An alert is generated if this figure has reached the treshold (default 105%).</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Resolutions</maml:title>
+              <maml:para>Review the dynamic memory configuration for the VM. Assign additional memory if required.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Additional</maml:title>
+              <maml:para>
+                <maml:navigationLink>
+                  <maml:linkText>http://blogs.technet.com/b/haroldwong/archive/2013/03/08/hyper-v-2012-dynamic-memory-what-does-the-vm-think-it-has-versus-what-it-really-has.aspx</maml:linkText>
+                  <maml:uri href="http://blogs.technet.com/b/haroldwong/archive/2013/03/08/hyper-v-2012-dynamic-memory-what-does-the-vm-think-it-has-versus-what-it-really-has.aspx" />
+                </maml:navigationLink>
+              </maml:para>
+            </maml:section>
+          </MamlContent>
+        </KnowledgeArticle>
+        <KnowledgeArticle ElementID="QND.Hyperv2012R2.VMReplica.Status" Visible="true">
+          <MamlContent>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Summary</maml:title>
+              <maml:para>This montior checks the VM replication status.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Configuration</maml:title>
+              <maml:para>The following replication status is considered health: 'Ready for replication', 'Replicating', 'Synced replication complete', 'Recovered', 'Committed' and 'Failback complete'</maml:para>
+              <maml:para>The following replication status is considered warning: 'Waiting to complete initial replication', 'Suspended', 'Waiting to start resynchronization', 'Resynchronizing', 'Resynchronization suspended' and 'Failback in progress'</maml:para>
+              <maml:para>The following replication status is considered error: 'Critical'</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Resolutions</maml:title>
+              <maml:para>Please refer to the articles provided in the Additional Information section for more detailed explaination of each replication status.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Additional</maml:title>
+              <maml:para>
+                <maml:navigationLink>
+                  <maml:linkText>http://blogs.technet.com/b/virtualization/archive/2012/06/15/interpreting-replication-health-part-1.aspx</maml:linkText>
+                  <maml:uri href="http://blogs.technet.com/b/virtualization/archive/2012/06/15/interpreting-replication-health-part-1.aspx" />
+                </maml:navigationLink>
+              </maml:para>
+              <maml:para>
+                <maml:navigationLink>
+                  <maml:linkText>http://blogs.technet.com/b/virtualization/archive/2012/06/21/interpreting-replication-health-part-2.aspx</maml:linkText>
+                  <maml:uri href="http://blogs.technet.com/b/virtualization/archive/2012/06/21/interpreting-replication-health-part-2.aspx" />
+                </maml:navigationLink>
+              </maml:para>
+            </maml:section>
+          </MamlContent>
+        </KnowledgeArticle>
+        <KnowledgeArticle ElementID="QND.Hyperv2012R2.VMSnapshotAge.Status" Visible="true">
+          <MamlContent>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Summary</maml:title>
+              <maml:para>It is not recommended to snapshot production VMs. VM Snapshots also have negative impacts on VM and host performance. Instead of alerting on snapshots creation, this monitor checks the age of any snapshots and alert when the snapshot has existed for a period of time.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Configuration</maml:title>
+              <maml:para>This monitor generates a warning alert if a snapshot age has reached 8 hours and a critical alert if the age has reached 24 hours.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Resolutions</maml:title>
+              <maml:para>Review the snapshots and delete the if they are no longer required.</maml:para>
+            </maml:section>
+          </MamlContent>
+        </KnowledgeArticle>
+        <KnowledgeArticle ElementID="QND.Hyperv2012R2.VMISStatus" Visible="true">
+          <MamlContent>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Summary</maml:title>
+              <maml:para>This monitor checks if the Hyper-V Integration Service is up-to-date on the VMs.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Configuration</maml:title>
+              <maml:para>A warning alert is raised when the Hyper-V Integration Service requires update on a VM.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Resolutions</maml:title>
+              <maml:para>Update the Hyper-V Integration service on the VM during an appropriate outage window.</maml:para>
+            </maml:section>
+          </MamlContent>
+        </KnowledgeArticle>
+        <KnowledgeArticle ElementID="QND.Hyperv.2012R2.VHDFragmentation.Monitor" Visible="true">
+          <MamlContent>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Summary</maml:title>
+              <maml:para>Dynamic and differencing VHDs can be fragmented over time. This monitor checks the VHD fragmentation level. </maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Configuration</maml:title>
+              <maml:para>A warning alert is raised when the fragmentation level has reached the threshold of 30% and a critical alert is raised when it has reached 50%.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Resolutions</maml:title>
+              <maml:para>The easiest way to defrag the VHD is to perform a storage migration.</maml:para>
+            </maml:section>
+          <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Additional</maml:title>
+              <maml:para>
+                <maml:navigationLink>
+                  <maml:linkText>http://blogs.msdn.com/b/virtual_pc_guy/archive/2015/03/04/checking-and-correcting-virtual-hard-disk-fragmentation.aspx</maml:linkText>
+                  <maml:uri href="http://blogs.msdn.com/b/virtual_pc_guy/archive/2015/03/04/checking-and-correcting-virtual-hard-disk-fragmentation.aspx" />
+                </maml:navigationLink>
+              </maml:para>
+            </maml:section>
+          </MamlContent>
+        </KnowledgeArticle>
+        <KnowledgeArticle ElementID="QND.Windows.HyperV.2012.R2.VirtualDrive.FreeSpaceMonitor" Visible="true">
+          <MamlContent>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Summary</maml:title>
+              <maml:para>This monitor checks if there are enough free space on the virtual hard disk.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Configuration</maml:title>
+              <maml:para>This monitor generates a warning alert when the VHD has less than 2GB of free space, and a critical alert when the free space is below 200MB.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Resolutions</maml:title>
+              <maml:para>Increase the VHD size or free some space.</maml:para>
+            </maml:section>
+          </MamlContent>
+        </KnowledgeArticle>
+        <KnowledgeArticle ElementID="QND.Windows.HyperV.2012.R2.RemoteFxCapableMonitor" Visible="true">
+          <MamlContent>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Summary</maml:title>
+              <maml:para>This monitor checks if the VM has RemoteFX enabled and if the GPUs installed on this server are RemoteFX capable.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Configuration</maml:title>
+              <maml:para>Alert is raised when the VM has RemoteFX enabled but the GPU installed on the Hyper-V host are not RemoteFX capable.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Resolutions</maml:title>
+              <maml:para>Disable RemoteFX for the VM or replace the GPUs on the Hyper-V host.</maml:para>
+            </maml:section>
+          </MamlContent>
+        </KnowledgeArticle>
+        <KnowledgeArticle ElementID="QND.Windows.HyperV.2012.R2.HeterogeneousGPUMonitor" Visible="true">
+          <MamlContent>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Summary</maml:title>
+              <maml:para>This monitor checks if the VM has RemoteFX enabled and if the GPUs installed on this server are the same make and model.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Configuration</maml:title>
+              <maml:para>Alert is raised when the VM has RemoteFX enabled but the GPU installed on the Hyper-V host are not the same make and model.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Resolutions</maml:title>
+              <maml:para>Disable RemoteFX for the VM or replace the GPUs on the Hyper-V host.</maml:para>
+            </maml:section>
+          </MamlContent>
+        </KnowledgeArticle>
+      </KnowledgeArticles>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>
