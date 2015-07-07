@@ -1,0 +1,30 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Categories>
+    <Category ID="Cat.QND.Hyperv2012R2.VMConnect.ConsoleTask" Target="QND.Hyperv2012R2.VMConnect.ConsoleTask" Value="System!System.Internal.ManagementPack.ConsoleTasks.MonitoringObject" />
+  </Categories>
+  <Presentation>
+    <ConsoleTasks>
+      <ConsoleTask ID="QND.Hyperv2012R2.VMConnect.ConsoleTask" Accessibility="Public" Enabled="true" Target="QND.Hyperv.2012R2.VM" RequireOutput="false">
+        <Assembly>Res.QND.Hyperv2012R2.VMConnect.ConsoleTask</Assembly>
+        <Handler>ShellHandler</Handler>
+        <Parameters>
+          <Argument Name="WorkingDirectory" />
+          <Argument Name="Application">%SystemRoot%\System32\vmconnect.exe</Argument>
+          <Argument>$Target/Property[Type="QND.Hyperv.2012R2.VM"]/HostName$ $Target/Property[Type="QND.Hyperv.2012R2.VM"]/VirtualMachineName$</Argument>
+        </Parameters>
+      </ConsoleTask>
+    </ConsoleTasks>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv2012R2.VMConnect.ConsoleTask">
+          <Name>Hyper-V - Connect VM</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+  <Resources>
+    <Assembly ID="Res.QND.Hyperv2012R2.VMConnect.ConsoleTask" Accessibility="Public" FileName="QND.Hyperv2012R2.VMConnect.ConsoleTask" HasNullStream="true" QualifiedName="QND.Hyperv2012R2.VMConnect.ConsoleTask" />
+  </Resources>
+</ManagementPackFragment>

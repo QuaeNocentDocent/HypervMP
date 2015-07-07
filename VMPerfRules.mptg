@@ -1,7 +1,7 @@
 <TemplateGroup>
   <Instances>
     <Instance ID="Instance6e6966ef64584dabab974d07aee03c69" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
-      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
         <Id>VHDWriteBytesSec.Rule</Id>
         <DisplayName>Hyper-V - VHD Write Bytes per sec</DisplayName>
         <Description>Collects Bytes Written Per second</Description>
@@ -21,7 +21,7 @@
       </PerformanceCollectionRuleConfig>
     </Instance>
     <Instance ID="Instance47db10adc91046cf81b63a0f71a1362e" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
-      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
         <Id>VMMemoryPressure.Rule</Id>
         <DisplayName>Hyper-V - VM Memory Average Pressure</DisplayName>
         <Description>Collects Dyanmic memory average pressure</Description>
@@ -41,7 +41,7 @@
       </PerformanceCollectionRuleConfig>
     </Instance>
     <Instance ID="Instance845eadb699134f2c8b132299d576b4ec" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
-      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
         <Id>vNicBytesRcvPerSec.Rule</Id>
         <DisplayName>Hyper-V - vNIC Bytes Received Per Second</DisplayName>
         <Description>Collects Bytes Received Per second</Description>
@@ -60,28 +60,8 @@
         <CollectToDW>true</CollectToDW>
       </PerformanceCollectionRuleConfig>
     </Instance>
-    <Instance ID="Instance6659fee2273c431d90cf10f4a0314d1e" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
-      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-        <Id>vNicBytesSntPerSec.Rule</Id>
-        <DisplayName>Hyper-V - vNIC Bytes Sent Per Second</DisplayName>
-        <Description>Collects Bytes Received Per second</Description>
-        <Category>PerformanceCollection</Category>
-        <ConfirmDelivery>false</ConfirmDelivery>
-        <Target>QND.HyperV.2012R2.VirtualNetworkAdapter</Target>
-        <Enabled>true</Enabled>
-        <Remotable>true</Remotable>
-        <Priority>Normal</Priority>
-        <DiscardLevel>100</DiscardLevel>
-        <ConditionDetectionId>CD</ConditionDetectionId>
-        <DataSourceId>DS</DataSourceId>
-        <DataSourceConfig>&lt;ComputerName&gt;$Target/Host/Property[Type='QND.Hyperv.2012R2.VM']/HostName$&lt;/ComputerName&gt;&lt;CounterName&gt;Bytes Sent/sec&lt;/CounterName&gt;&lt;ObjectName&gt;Hyper-V Virtual Network Adapter&lt;/ObjectName&gt;&lt;InstanceName&gt;$Target/Property[Type='QND.HyperV.VMHardwareComponent']/PerfInstance$&lt;/InstanceName&gt;&lt;Frequency&gt;300&lt;/Frequency&gt;&lt;Tolerance&gt;5&lt;/Tolerance&gt;&lt;ToleranceType&gt;Percentage&lt;/ToleranceType&gt;&lt;MaximumSampleSeparation&gt;10&lt;/MaximumSampleSeparation&gt;</DataSourceConfig>
-        <DataSourceType>Perf!System.Performance.OptimizedDataProvider</DataSourceType>
-        <CollectToDB>true</CollectToDB>
-        <CollectToDW>true</CollectToDW>
-      </PerformanceCollectionRuleConfig>
-    </Instance>
     <Instance ID="Instanceb7e1e056889240e598e7b9954dff844e" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
-      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
         <Id>VHDNormIOPS.Rule</Id>
         <DisplayName>Hyper-V - VHD Normalized IOps</DisplayName>
         <Description>Collects Normalized IOps</Description>
@@ -101,7 +81,7 @@
       </PerformanceCollectionRuleConfig>
     </Instance>
     <Instance ID="Instanceebfa82d8a5094596bd3c67afd0a68e75" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
-      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
         <Id>VHDReadBytesSec.Rule</Id>
         <DisplayName>Hyper-V - VHD Read Bytes per sec</DisplayName>
         <Description>Collects Bytes Read Per second</Description>
@@ -121,7 +101,7 @@
       </PerformanceCollectionRuleConfig>
     </Instance>
     <Instance ID="Instance27eacd6cd23046688c0cd4371c85b371" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
-      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <Id>vCoreTotalRunTime.Rule</Id>
         <DisplayName>Hyper-V - vCore % runtime</DisplayName>
         <Description>Collects vCore Usage Percentage</Description>
@@ -143,7 +123,7 @@
       </PerformanceCollectionRuleConfig>
     </Instance>
     <Instance ID="Instance43fcda1909a04f60969b36258423c850" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
-      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
         <Id>VMMemory.Rule</Id>
         <DisplayName>Hyper-V - VM Memory (MB)</DisplayName>
         <Description>Collects assigned memory in MB</Description>
@@ -157,6 +137,26 @@
         <ConditionDetectionId>CD</ConditionDetectionId>
         <DataSourceId>DS</DataSourceId>
         <DataSourceConfig>&lt;ComputerName&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/HostName$&lt;/ComputerName&gt;&lt;CounterName&gt;Physical Memory&lt;/CounterName&gt;&lt;ObjectName&gt;Hyper-V Dynamic Memory VM&lt;/ObjectName&gt;&lt;InstanceName&gt;$Target/Property[Type='QND.Hyperv.2012R2.VM']/VirtualMachineName$&lt;/InstanceName&gt;&lt;Frequency&gt;1800&lt;/Frequency&gt;&lt;Tolerance&gt;5&lt;/Tolerance&gt;&lt;ToleranceType&gt;Percentage&lt;/ToleranceType&gt;&lt;MaximumSampleSeparation&gt;4&lt;/MaximumSampleSeparation&gt;</DataSourceConfig>
+        <DataSourceType>Perf!System.Performance.OptimizedDataProvider</DataSourceType>
+        <CollectToDB>true</CollectToDB>
+        <CollectToDW>true</CollectToDW>
+      </PerformanceCollectionRuleConfig>
+    </Instance>
+    <Instance ID="Instanceb95307e538b04cceae455ee68b599725" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Id>vNicBytesSntPerSec.Rule</Id>
+        <DisplayName>Hyper-V - vNIC Bytes Sent Per Second</DisplayName>
+        <Description>Collects Bytes Received Per second</Description>
+        <Category>PerformanceCollection</Category>
+        <ConfirmDelivery>false</ConfirmDelivery>
+        <Target>QND.HyperV.2012R2.VirtualNetworkAdapter</Target>
+        <Enabled>true</Enabled>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <DiscardLevel>100</DiscardLevel>
+        <ConditionDetectionId>CD</ConditionDetectionId>
+        <DataSourceId>DS</DataSourceId>
+        <DataSourceConfig>&lt;ComputerName&gt;$Target/Host/Property[Type='QND.Hyperv.2012R2.VM']/HostName$&lt;/ComputerName&gt;&lt;CounterName&gt;Bytes Sent/sec&lt;/CounterName&gt;&lt;ObjectName&gt;Hyper-V Virtual Network Adapter&lt;/ObjectName&gt;&lt;InstanceName&gt;$Target/Property[Type='QND.HyperV.VMHardwareComponent']/PerfInstance$&lt;/InstanceName&gt;&lt;Frequency&gt;300&lt;/Frequency&gt;&lt;Tolerance&gt;5&lt;/Tolerance&gt;&lt;ToleranceType&gt;Percentage&lt;/ToleranceType&gt;&lt;MaximumSampleSeparation&gt;10&lt;/MaximumSampleSeparation&gt;</DataSourceConfig>
         <DataSourceType>Perf!System.Performance.OptimizedDataProvider</DataSourceType>
         <CollectToDB>true</CollectToDB>
         <CollectToDW>true</CollectToDW>

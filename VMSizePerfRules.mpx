@@ -1,0 +1,75 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Rules>
+      <Rule ID="QND.Hyperv2012R2.VM.TotalSize.Perf.Collection.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMSize.Perf.DS">
+            <IntervalSeconds>1800</IntervalSeconds>
+            <SyncTime/>
+            <VMId>$Target/Property[Type="QND.Hyperv.2012R2.VM"]/VirtualMachineId$</VMId>
+            <CounterName>VM Size GB</CounterName>
+            <PropertyBagValue>CurrentSizeGB</PropertyBagValue>
+            <TimeoutSeconds>300</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+          </DataSource>
+        </DataSources>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv2012R2.VM.MaxSize.Perf.Collection.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMSize.Perf.DS">
+            <IntervalSeconds>300</IntervalSeconds>
+            <SyncTime/>
+            <VMId>$Target/Property[Type="QND.Hyperv.2012R2.VM"]/VirtualMachineId$</VMId>
+            <CounterName>VM Maximum Size GB</CounterName>
+            <PropertyBagValue>MaxSizeGB</PropertyBagValue>
+            <TimeoutSeconds>1800</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+          </DataSource>
+        </DataSources>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+      <Rule ID="QND.Hyperv2012R2.VM.MinSize.Perf.Collection.Rule" Target="QND.Hyperv.2012R2.VM" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>PerformanceCollection</Category>
+        <DataSources>
+          <DataSource ID="DS" TypeID="QND.Hyperv2012R2.GetVMSize.Perf.DS">
+            <IntervalSeconds>300</IntervalSeconds>
+            <SyncTime/>
+            <VMId>$Target/Property[Type="QND.Hyperv.2012R2.VM"]/VirtualMachineId$</VMId>
+            <CounterName>VM Minimum Size GB</CounterName>
+            <PropertyBagValue>MinSizeGB</PropertyBagValue>
+            <TimeoutSeconds>1800</TimeoutSeconds>
+            <TraceLevel>2</TraceLevel>
+          </DataSource>
+        </DataSources>
+        <WriteActions>
+          <WriteAction ID="CollectToDB" TypeID="SC!Microsoft.SystemCenter.CollectPerformanceData" />
+          <WriteAction ID="CollectToDW" TypeID="MSDL!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+        </WriteActions>
+      </Rule>
+    </Rules>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="QND.Hyperv2012R2.VM.TotalSize.Perf.Collection.Rule">
+          <Name>Hyper-V - VM Total Size Performance Collection Rule</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VM.MaxSize.Perf.Collection.Rule">
+          <Name>Hyper-V - VM Maximum Size Performance Collection Rule</Name>
+        </DisplayString>
+        <DisplayString ElementID="QND.Hyperv2012R2.VM.MinSize.Perf.Collection.Rule">
+          <Name>Hyper-V - VM Minimum Size Performance Collection Rule</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

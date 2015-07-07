@@ -2,7 +2,7 @@
 #SET ErrorLevel to 5 so show discovery info
 
 #*************************************************************************
-# Script Name - Get-VMISStaus.ps1
+# Script Name - Get-VMMemoryStatus.ps1
 # Author	  -  Daniele Grandini - Progel spa
 # Version  - 1.0 01.03.2015
 # Purpose     - 

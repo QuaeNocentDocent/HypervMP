@@ -191,7 +191,67 @@
           </Composite>
         </ModuleImplementation>
         <OutputType>System!System.PropertyBagData</OutputType>
-      </DataSourceModuleType>      
+      </DataSourceModuleType>
+      <DataSourceModuleType ID="QND.Hyperv2012R2.GetVMSize.Perf.DS" Accessibility="Public" Batching="false">
+        <Configuration>
+          <xsd:element name="IntervalSeconds" type="xsd:int" />
+          <xsd:element name="SyncTime" type="xsd:string" />
+          <xsd:element name="VMId" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="CounterName" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="PropertyBagValue" />
+          <xsd:element name="TimeoutSeconds" type="xsd:int" minOccurs="0" maxOccurs="1" default="60" />
+          <xsd:element name="TraceLevel" type="xsd:int" minOccurs="0" maxOccurs="1" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TraceLevel" ParameterType="int" Selector="$Config/TraceLevel$"/>
+        </OverrideableParameters>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="Scheduler" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <SyncTime>$Config/SyncTime$</SyncTime>
+              </DataSource>
+              <ProbeAction ID="Probe" TypeID="QND.Hyperv2012R2.GetVMSize.PT">
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+                <TraceLevel>$Config/TraceLevel$</TraceLevel>
+              </ProbeAction>
+              <ConditionDetection ID="FilterVM" TypeID="System!System.ExpressionFilter">
+                <Expression>
+                  <SimpleExpression>
+                    <ValueExpression>
+                      <XPathQuery Type="String">Property[@Name='VMId']</XPathQuery>
+                    </ValueExpression>
+                    <Operator>Equal</Operator>
+                    <ValueExpression>
+                      <Value Type="String">$Config/VMId$</Value>
+                    </ValueExpression>
+                  </SimpleExpression>
+                </Expression>
+              </ConditionDetection>
+              <ConditionDetection ID="Mapper" TypeID="Perf!System.Performance.DataGenericMapper">
+                <ObjectName>Virtual Machine</ObjectName>
+                <CounterName>$config/CounterName$</CounterName>
+                <InstanceName>$Data/Property[@Name='VMName']$ - $Data/Property[@Name='VMId']$</InstanceName>
+                <Value>$Data/Property[@Name='$Config/PropertyBagValue$']$</Value>
+              </ConditionDetection>
+            </MemberModules>
+            <Composition>
+              <Node ID="Mapper">
+                <Node ID="FilterVM">
+                  <Node ID ="Probe">
+                    <Node ID="Scheduler" />
+                  </Node>
+                </Node>
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>Perf!System.Performance.Data</OutputType>
+      </DataSourceModuleType>
       <DataSourceModuleType ID="QND.Hyperv2012R2.GetVHDStats.DS" Accessibility="Public" Batching="false">
         <Configuration>
           <xsd:element name="IntervalSeconds" type="xsd:int" />
@@ -646,6 +706,42 @@
         <OutputType>System!System.PropertyBagData</OutputType>
         <InputType>System!System.BaseData</InputType>
       </ProbeActionModuleType>      
+      <ProbeActionModuleType ID="QND.Hyperv2012R2.GetVMSize.PT" Accessibility="Public" Batching="false">
+        <Configuration>
+          <xsd:element name="TimeoutSeconds" type="xsd:int" minOccurs="0" maxOccurs="1" default="60" />
+          <xsd:element name="TraceLevel" type="xsd:int" minOccurs="0" maxOccurs="1" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TraceLevel" ParameterType="int" Selector="$Config/TraceLevel$" />
+        </OverrideableParameters>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <ProbeAction ID="Stats" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagProbe">
+                <ScriptName>Get-VHDSizePerVM.ps1</ScriptName>
+                <ScriptBody>
+                  $IncludeFileContent/Scripts/Get-VHDSizePerVM.ps1$
+                </ScriptBody>
+                <Parameters>
+                  <Parameter>
+                    <Name>TraceLevel</Name>
+                    <Value>$Config/TraceLevel$</Value>
+                  </Parameter>
+                </Parameters>
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+                <StrictErrorHandling>false</StrictErrorHandling>
+                <!-- true only for Tasks -->
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Stats" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
       <ProbeActionModuleType ID="QND.Hyperv2012R2.GetVHDStats.PT" Accessibility="Public" Batching="false">
         <Configuration>
           <xsd:element name="TimeoutSeconds" type="xsd:int" minOccurs="0" maxOccurs="1" default="60" />
@@ -659,7 +755,7 @@
           <Composite>
             <MemberModules>
               <ProbeAction ID="Stats" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagProbe">
-                <ScriptName>Get-VMISStatus.ps1</ScriptName>
+                <ScriptName>Get-VHDStats.ps1</ScriptName>
                 <ScriptBody>
                   $IncludeFileContent/Scripts/Get-VHDStats.ps1$
                 </ScriptBody>
