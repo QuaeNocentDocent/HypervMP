@@ -18,7 +18,7 @@
     <Company>Quae Nocent Docent</Company>
     <Copyright>Copyright (c) QND. All rights reserved.</Copyright>
     <DelaySigning>False</DelaySigning>
-    <AssemblyOriginatorKeyFile>C:\Users\tyang\OneDrive\MPDev\Keys\HyperV.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Users\grandinid\SkyDrive\Dev\OpsMgr\Firma\QND1.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>false</DebugSymbols>
@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ManagementPackReference Include="Microsoft.SystemCenter.DataWarehouse.Library">
-      <HintPath>C:\Users\danie_000\OneDrive\Dev\OpsMgr\GIT\QND.Hyperv2012R2\MPLib\Microsoft.SystemCenter.DataWarehouse.Library.mp</HintPath>
+      <HintPath>.\MPLib\Microsoft.SystemCenter.DataWarehouse.Library.mp</HintPath>
       <Alias>MSDL</Alias>
       <MinVersion>7.1.10226.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
@@ -47,7 +47,7 @@
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.Cluster.Library">
-      <HintPath>C:\Users\danie_000\OneDrive\Dev\OpsMgr\GIT\QND.Hyperv2012R2\MPLib\Microsoft.Windows.Cluster.Library.mp</HintPath>
+      <HintPath>.\MPLib\Microsoft.Windows.Cluster.Library.mp</HintPath>
       <Alias>Cluster</Alias>
       <MinVersion>7.0.8433.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
@@ -75,13 +75,13 @@
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.Server.2012.R2.Discovery">
-      <HintPath>C:\Documents\MPRef\Microsoft.Windows.Server.2012.R2.Discovery.mp</HintPath>
+      <HintPath>.\MpLib\Microsoft.Windows.Server.2012.R2.Discovery.mp</HintPath>
       <Alias>Win2012R2</Alias>
       <MinVersion>6.0.7230.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.Server.Library">
-      <HintPath>C:\Documents\MPRef\Microsoft.Windows.Server.Library.mp</HintPath>
+      <HintPath>.\MpLib\Microsoft.Windows.Server.Library.mp</HintPath>
       <Alias>WSLib</Alias>
       <MinVersion>6.0.7230.0</MinVersion>
       <PackageToBundle>False</PackageToBundle>
@@ -195,6 +195,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="MPLib" />
     <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +223,33 @@
     <Content Include="HypervHostPerfRules.mptg">
       <SubType>Content</SubType>
       <Generator>FragmentGenerator</Generator>
+    </Content>
+    <Content Include="MPLib\Microsoft.SystemCenter.DataWarehouse.Library.mp">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="MPLib\Microsoft.SystemCenter.Library.mp">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="MPLib\Microsoft.SystemCenter.Visualization.Library.mp">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="MPLib\Microsoft.Windows.Cluster.Library.mp">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="MPLib\Microsoft.Windows.Library.mp">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="MPLib\Microsoft.Windows.Server.2012.R2.Discovery.mp">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="MPLib\Microsoft.Windows.Server.Library.mp">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="MPLib\System.Health.Library.mp">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="MPLib\System.Library.mp">
+      <SubType>Content</SubType>
     </Content>
     <Content Include="VMPerfRules.mptg">
       <SubType>Content</SubType>
