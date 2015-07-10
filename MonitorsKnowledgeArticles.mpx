@@ -129,7 +129,9 @@
           <MamlContent>
             <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
               <maml:title>Summary</maml:title>
-              <maml:para>Dynamic and differencing VHDs can be fragmented over time. This monitor checks the VHD fragmentation level. </maml:para>
+              <maml:para>Dynamic and differencing VHDs can be fragmented over time. This monitor checks the VHD fragmentation level. This monitor is disabled by deafult since it can be very noisy.
+              VHD(x) fragmentation is related to the intenrla logical structure of the virtual disk, there are other two posssibile fragmenetations: at the hyper-v host file system level and at the guest file system level.
+              </maml:para>
             </maml:section>
             <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
               <maml:title>Configuration</maml:title>
@@ -141,6 +143,9 @@
             </maml:section>
           <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
               <maml:title>Additional</maml:title>
+            <maml:para>
+              When a VHD(x) gets fragmentated the performance are affected. From first informal tests it appears that random reads are particularly affected with a penality of more than 50% in trhoughput for a 100% fragmented VHD.
+            </maml:para>
               <maml:para>
                 <maml:navigationLink>
                   <maml:linkText>http://blogs.msdn.com/b/virtual_pc_guy/archive/2015/03/04/checking-and-correcting-virtual-hard-disk-fragmentation.aspx</maml:linkText>
