@@ -288,7 +288,7 @@ try
 				$oNic.AddProperty("$MPElement[Name='QND.HyperV.2012R2.VirtualNetworkAdapter']/SwitchName$", $nic.SwitchName)
 				try {$perfInstance = ("$($vm.Name)_$($nic.Name)_$($vm.Id.ToString())--$($nic.AdapterId.ToString())").Replace('\','--')}
 				catch {$perfInstance=''}
-				$oNic.AddProperty("$MPElement[Name='QND.HyperV.VMHardwareComponent']/PerfInstance$", $nicInstance)
+				$oNic.AddProperty("$MPElement[Name='QND.HyperV.VMHardwareComponent']/PerfInstance$", $perfInstance)
 				$oDiscoveryData.AddInstance($oNic)
 				#$rel = $oDiscoveryData.CreateRelationshipInstance("$MPElement[Name='QND.Hyperv.2012R2.VMHostsVMHardwareComponent']$")
 				#$Rel.Source=$oInstance
