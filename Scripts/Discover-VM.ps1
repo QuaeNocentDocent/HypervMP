@@ -261,7 +261,14 @@ try
 				$oDisk.AddProperty("$MPElement[Name='QND.HyperV.VMHardwareComponent']/Name$", $disk.Name)
 				if($disk.ControllerType) {$oDisk.AddProperty("$MPElement[Name='QND.HyperV.2012R2.VirtualDrive']/ConnectedControllerName$", $disk.ControllerType.ToString())}
 				$oDisk.AddProperty("$MPElement[Name='QND.HyperV.2012R2.VirtualDrive']/ImageFile$", $disk.Path)
-				try {$perfInstance = $disk.Path.Replace('\','-')}
+				#Fix UNC perf counter path
+				try {
+					if (([Uri]$disk.Path).IsUnc -eq $true) {
+						$perfInstance = $disk.Path.Replace('\','-').Insert(2,'?-UNC-')
+					} else {
+						$perfInstance = $disk.Path.Replace('\','-')
+					}
+				}
 				catch {$perfInstance=''}				
 				$oDisk.AddProperty("$MPElement[Name='QND.HyperV.VMHardwareComponent']/PerfInstance$", $perfInstance )
 				
